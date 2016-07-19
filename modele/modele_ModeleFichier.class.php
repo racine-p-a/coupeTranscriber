@@ -199,4 +199,38 @@ class Fichier extends ModeleAbstrait
             }
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getEmplacementFichier()
+    {
+        return $this->emplacementFichier;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetaDonnees()
+    {
+        return $this->metaDonnees;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListeTours()
+    {
+        return $this->listeTours;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListeLocuteurs()
+    {
+        return $this->listeLocuteurs;
+    }
+
+
 }

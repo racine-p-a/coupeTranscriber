@@ -13,10 +13,9 @@ else if(isset($_POST['envoiFichier']) && !isset($_POST['fichierDemande']))
     // TRAITEMENT DES DONNÉES
     include_once('modele/modele_ModeleFichier.class.php');
     $donneesFichier = new Fichier();
-    echo $donneesFichier->getErreurs();
     // AFFICHAGE DE LA VUE.
     include_once('vue/vue_VueChoix.class.php');
-    $vue = new VueChoix();
+    $vue = new VueChoix($donneesFichier);
     echo $vue->getVue();
 }
 else if(isset($_POST['fichierDemande']))

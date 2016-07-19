@@ -89,6 +89,38 @@ class Tour
         $this->chronoFin = $chronoFin;
     }
 
+    /**
+     * @return string
+     */
+    public function getChronoDebut()
+    {
+        return $this->chronoDebut;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChronoFin()
+    {
+        return $this->chronoFin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocuteurs()
+    {
+        return $this->locuteurs;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeroulementDuTour()
+    {
+        return $this->deroulementDuTour;
+    }
+
 
 
 
