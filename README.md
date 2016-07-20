@@ -32,12 +32,19 @@ Le but de ce projet est de découper des morceaux de transcriptions (au format .
 ## MANUAL INSTALLATION
 
 - You must have installed a server and PHP (PHP5 or PHP7)
+
 For Ubuntu users : `sudo apt-get install apache2 php libapache2-mod-php`
+
 For Windows users, you can [download](https://sourceforge.net/projects/wampserver/) and [install WAMP](http://www.wampserver.com/).
+
 For Mac users, you can [download and install MAMP](https://www.mamp.info/en/downloads/).
+
 - Just download the zipped project (or git-clone it) ans copy the files on your server root location.
+
 Location for Uubuntu users : `/var/www/html/`
+
 Location for DebIan users : `/var/www/`
+
 Location for Mac and windows users is the root directory of your server MAMP/WAMP.
 - Open your web browser and go to http://localhost/coupeTranscriber/index.php .
 - Congratulations.
