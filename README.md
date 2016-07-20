@@ -8,11 +8,13 @@ Projet achevé et foncionnel ! Juste quelques améliorations par-ci par-là.
 
 This project focuses on the slashing of transcriber files with an automatic recalculation of all timings.
 It means that if you want only a portion of a transcription, you'll have to :
-1.  Once the application is installed on your computer, open your web browser and go to this address : http://localhost/coupeTranscriber/index.php
-2.  Import the file in the interface
-3.  Choose the two timings you want (beginning and ending of the portion you want)
-4.  Decide if you want to keep those timings unchanged or to restart the first one at 0 (in this case, the followings ara automatically recalculated)
-5.  Done ! Just accept the downloading file in your web browser.
+<ol>
+    <li>Once the application is installed on your computer, open your web browser and go to this address : http://localhost/coupeTranscriber/index.php</li>
+    <li>Import the file in the interface</li>
+    <li>Choose the two timings you want (beginning and ending of the portion you want)</li>
+    <li>Decide if you want to keep those timings unchanged or to restart the first one at 0 (in this case, the followings ara automatically recalculated)</li>
+    <li>Done ! Just accept the downloading file in your web browser.</li>
+</ol>
  
 ## Français
  
