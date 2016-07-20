@@ -36,7 +36,7 @@ For Mac users, you can [download and install MAMP](https://www.mamp.info/en/down
 Location for Uubuntu users : `/var/www/html/`
 Location for DebIan users : `/var/www/`
 Location for Mac and windows users is the root directory of your server MAMP/WAMP.
-- Open your web browser and go to http://localhost/coupeTranscriber/index.php
+- Open your web browser and go to http://localhost/coupeTranscriber/index.php .
 - Congratulations.
 
 
