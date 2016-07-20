@@ -1,26 +1,27 @@
 # coupeTranscriber
 
 Project is currently done ans works perfectly fine. I'm just working on few improvements on the interface.
+
 Projet achevé et foncionnel ! Juste quelques améliorations par-ci par-là.
 
 ## English
 
 This project focuses on the slashing of transcriber files with an automatic recalculation of all timings.
 It means that if you want only a portion of a transcription, you'll have to :
-1. Once the application is installed on your computer, open your web browser and go to this address : http://localhost/coupeTranscriber/index.php
-2. Import the file in the interface
-3. Choose the two timings you want (beginning and ending of the portion you want)
-4. Decide if you want to keep those timings unchanged or to restart the first one at 0 (in this case, the followings ara automatically recalculated)
-5. Done ! Just accept the downloading file in your web browser.
+1.  Once the application is installed on your computer, open your web browser and go to this address : http://localhost/coupeTranscriber/index.php
+2.  Import the file in the interface
+3.  Choose the two timings you want (beginning and ending of the portion you want)
+4.  Decide if you want to keep those timings unchanged or to restart the first one at 0 (in this case, the followings ara automatically recalculated)
+5.  Done ! Just accept the downloading file in your web browser.
  
 ## Français
  
 Le but de ce projet est de découper des morceaux de transcriptions (au format .trs de Transcriber). L'application recalcule les chronos à partir de 0 si vous le désirez et selon le processus suivant :
-1. Une fois le logiciel installé sur votre machine, allez à cette adresse dans votre navigateur : http://localhost/coupeTranscriber/index.php
-2. Importez le fichier dont vous désirez une portion.
-3. Choisissez les deux bornes de départ et de fin que vous désirez.
-4. Choisissez également si vous souhaitez garder les chronos tels quels ou si vous souhaitez tout redécaler à partir de 0.
-5. Fini ! L'application vous propose le téléchargement que vous n'avez plus qu'à accepter.
+1.  Une fois le logiciel installé sur votre machine, allez à cette adresse dans votre navigateur : http://localhost/coupeTranscriber/index.php
+2.  Importez le fichier dont vous désirez une portion.
+3.  Choisissez les deux bornes de départ et de fin que vous désirez.
+4.  Choisissez également si vous souhaitez garder les chronos tels quels ou si vous souhaitez tout redécaler à partir de 0.
+5.  Fini ! L'application vous propose le téléchargement que vous n'avez plus qu'à accepter.
  
 
 # INSTALLATION
