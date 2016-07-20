@@ -18,6 +18,11 @@ class Fichier extends ModeleAbstrait
     protected $emplacementFichier = '';
 
     /**
+     * @var string Le nom du fichier (extension comprise).
+     */
+    protected $nomFichier='';
+
+    /**
      * @var array Il s'agit de données présentent dans l'en-tête XML du fichier. Je les entrepose ici faute de mieux.
      */
     protected $metaDonnees = array();
@@ -55,6 +60,7 @@ class Fichier extends ModeleAbstrait
                 {
                     // Tout est OK. On peut crécupérer le fichier.
                     $this->emplacementFichier = 'uploads/' . basename($_FILES['fichierADecouper']['name']);
+                    $this->nomFichier = basename($_FILES['fichierADecouper']['name']);
                     move_uploaded_file($_FILES['fichierADecouper']['tmp_name'], $this->emplacementFichier);
                     /*
                      *              DÉCOUPAGE
@@ -348,6 +354,16 @@ class Fichier extends ModeleAbstrait
     {
         return $this->listeLocuteurs;
     }
+
+    /**
+     * @return string
+     */
+    public function getNomFichier()
+    {
+        return $this->nomFichier;
+    }
+
+
 
 
 }
