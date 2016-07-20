@@ -14,5 +14,15 @@ class Who
         $this->nb = $nb;
     }
 
+    /**
+     * @return string
+     */
+    public function getNb()
+    {
+        return $this->nb;
+    }
+
+
+
 
 }

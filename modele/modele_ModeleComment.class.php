@@ -14,5 +14,15 @@ class Comment
         $this->desc = $desc;
     }
 
+    /**
+     * @return string
+     */
+    public function getDesc()
+    {
+        return $this->desc;
+    }
+
+
+
 
 }

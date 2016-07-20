@@ -22,5 +22,31 @@ class Event
         $this->extent = $extent;
     }
 
+    /**
+     * @return string
+     */
+    public function getDesc()
+    {
+        return $this->desc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtent()
+    {
+        return $this->extent;
+    }
+
+
+
 
 }

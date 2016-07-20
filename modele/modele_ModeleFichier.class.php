@@ -200,6 +200,123 @@ class Fichier extends ModeleAbstrait
         }
     }
 
+    public function reconstruction($donnees, $chronoDebut, $chronoFin, $choixSynchro)
+    {
+        // Ici, on recréé le contenu d'un fichier .trs en fonction des besoins.
+        $texteTRS = '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Trans SYSTEM "trans-14.dtd">';
+
+        // MÉTADONNÉES
+        $texteTRS .= '
+<Trans scribe="' . $donnees->getMetaDonnees()['scribe'] . '" version="' . $donnees->getMetaDonnees()['version'] . '"
+       audio_filename="' . $donnees->getMetaDonnees()['audio_filename'] . '"
+       version_date="' . $donnees->getMetaDonnees()['version_date'] . '"
+       elapsed_time="' . $donnees->getMetaDonnees()['elapsed_time'] . '">';
+
+        // LOCUTEURS
+        $texteTRS .= '
+    <Speakers>';
+        foreach($donnees->getListeLocuteurs() as $locuteur)
+        {
+            $texteTRS .= '
+        <Speaker id="' . $locuteur->getId() .
+              '" name="' . $locuteur->getName() .
+              '" check="' . $locuteur->getCheck() .
+              '" dialect="' . $locuteur->getDialect() .
+              '" accent="' . $locuteur->getAccent() .
+              '" scope="' . $locuteur->getSCope() . '" />';
+        }
+        $texteTRS .= '
+    </Speakers>';
+
+        // TOURS
+        $texteTRS .= '
+    <Episode>
+        ' . $this->genererBaliseSection($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
+        $texteTRS .= $this->regenererListeTours($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
+
+        // FIN
+        $texteTRS .= '
+        </Section>
+    </Episode>
+</Trans>';
+        //echo $texteTRS;
+        return $texteTRS;
+    }
+
+
+
+
+    protected function regenererListeTours($listeTours, $chronoDebut, $chronoFin, $choixSynchro)
+    {
+        $balisesTRS = '';
+        $chronoDebut = floatval($chronoDebut);
+        $chronoFin   = floatval($chronoFin);
+
+        foreach($listeTours as $tour)
+        {
+            if(floatval($tour->getChronoDebut()) >= $chronoDebut && floatval($tour->getChronoFin()) <= $chronoFin )
+            {
+                // Les tours qui correspondent aux bornes demandés par l'utilisateur. Tous les autres sont à ignorer.
+                $chronoDebutTour = $tour->getChronoDebut();
+                $chronoFinTour   = $tour->getChronoFin();
+                if($choixSynchro =='recalculer')
+                {
+                    $chronoFinTour   = floatval($chronoFinTour) - floatval($chronoDebut);
+                    $chronoDebutTour = floatval($chronoDebutTour) - floatval($chronoDebut);
+                }
+                $balisesTRS .= '
+            <Turn speaker="' . $tour->getLocuteurs() . '" startTime="' . $chronoDebutTour . '" endTime="' . $chronoFinTour . '">
+                <Sync time="' . $chronoDebutTour . '" />';
+                $balisesTRS .= $this->regenererDeroulementDuTour($tour) . '</Turn>';
+            }
+        }
+
+        return $balisesTRS;
+    }
+
+
+    protected function regenererDeroulementDuTour($tour)
+    {
+        $contenuTour = '';
+        foreach($tour->getDeroulementDuTour() as $action)
+        {
+            if(is_string($action))
+            {
+                $contenuTour .= $action;
+            }
+            else if(get_class($action) == 'Event')
+            {
+                $contenuTour .= '<Event type="' . $action->getType() . '" desc="' . $action->getDesc() . '" extent="' . $action->getExtent() . '"/>';
+            }
+            else if(get_class($action) == 'Comment')
+            {
+                $contenuTour .= '<Comment desc="' . $action->getDesc() . '"/>';
+            }
+            else if(get_class($action) == 'Who')
+            {
+                $contenuTour .= '<Wo nb="' . $action->getNb() . '"/>';
+            }
+            else
+            {
+                //var_dump($action);
+            }
+        }
+        return $contenuTour;
+    }
+
+
+
+    protected function genererBaliseSection($listeTours, $chronoDebut, $chronoFin, $choixSynchro)
+    {
+        if($choixSynchro == 'recalculer')
+        {
+            $chronoFin = floatval($chronoFin)-floatval($chronoDebut);
+            $chronoDebut = 0;
+        }
+        return '<Section type="report" startTime="' . $chronoDebut . '" endTime="' . $chronoFin . '">';
+    }
+
     /**
      * @return string
      */

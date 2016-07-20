@@ -7,8 +7,6 @@ class VueChoix extends VueAbstraite
     protected $corpsHTML = '<!DOCTYPE html>
 <html>
 <body>
-
-    <h1>Comment souhaitez-vous borner la transcription ?</h1>
 ';
 
     /**
@@ -21,7 +19,8 @@ class VueChoix extends VueAbstraite
         // - Un pour choisir le début de la transcription
         // - Un autre pour en choisir la fin.
         // On ajoutera également une case cochée par défaut qui réinitialisera/recalculera tous les chronos de la portion choisie.
-        $this->corpsHTML .= '
+        $this->corpsHTML .= $this->genererRapportErreurs($donneesFichier->getErreurs()) . '
+    <h1>Comment souhaitez-vous borner la transcription ?</h1>
         <form action="index.php" enctype="multipart/form-data" method="post" >
         <h3>Début</h3>
         ' . $this->genererListeOptions($donneesFichier->getListeTours(), 'chronoDebut') . '
@@ -61,6 +60,22 @@ class VueChoix extends VueAbstraite
         $html = '<br><input type="radio" name="actionChrono" value="laisser">Laisser les chronos tels quels<br>
   <input type="radio" name="actionChrono" value="recalculer" checked>Réinitialiser les chronos : le premier sera à 0 et les suivants seront recalculés<br>';
 
+        return $html;
+    }
+
+    protected function genererRapportErreurs($erreurs)
+    {
+        if($erreurs == '')
+        {
+            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>';
+        }
+        else
+        {
+            $html = '<h4>ATTENTION ! Des erreurs ont été levées durant l\'importation du fichier</h4>
+            <p>' .
+            $erreurs .
+            '</p>';
+        }
         return $html;
     }
 

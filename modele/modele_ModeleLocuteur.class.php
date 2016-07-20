@@ -34,5 +34,55 @@ class Locuteur
         $this->scope = $scope;
     }
 
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCheck()
+    {
+        return $this->check;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDialect()
+    {
+        return $this->dialect;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccent()
+    {
+        return $this->accent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+
+
 
 }
