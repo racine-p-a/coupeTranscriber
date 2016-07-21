@@ -44,7 +44,7 @@ class VueChoix extends VueAbstraite
         foreach ($listeTours as $tour)
         {
             $html .='
-                <option value="' . $tour->getChronoDebut() . '">' . $tour->getChronoDebut() . '</option>';
+                <option value="' . $tour->getChronoDebut() . '">' . $this->convertirChrono($tour->getChronoDebut()) . '</option>';
             //var_dump($tour);
             //echo '<br><br>';
         }
@@ -77,6 +77,45 @@ class VueChoix extends VueAbstraite
             '</p>';
         }
         return $html;
+    }
+
+    /**
+     * Cette classe reçoit en entrée un chrono de type '65.122' et doit le convertir en 00:01:05.122
+     * @param string $chrono
+     * @return string
+     */
+    protected function convertirChrono($chrono = '')
+    {
+        $nbTotalDeSecondes = intval($chrono);
+        $decimales = floatval($chrono) - $nbTotalDeSecondes;
+
+        $heures  = floor($nbTotalDeSecondes/3600);
+        $secondesRestantes = $nbTotalDeSecondes - $heures*3600;
+        $minutes = floor($secondesRestantes/60);
+        $secondes = $secondesRestantes - $minutes*60;
+
+        // Ajustements de la taille au format str.
+        if($heures<10)
+        {
+            $heures = '0' . $heures;
+        }
+        if($minutes<10)
+        {
+            $minutes = '0' . $minutes;
+        }
+        if($secondes<10)
+        {
+            $secondes = '0' . $secondes;
+        }
+        // Nettoyage des décimales : 0.25 devient 25
+        $decimales = substr('' . $decimales, 2);
+        if($decimales == '')
+        {
+            $decimales = '00';
+        }
+
+
+        return '[' . $heures . ':' . $minutes . ':' . $secondes . '.' . $decimales .  ']';
     }
 
 
