@@ -62,11 +62,11 @@ TODO
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
 * Ajouter des scripts de vérification lors de la sélection des bornes temporelles t1<t2 .
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac). 
-* Dans l'nterface de bornage, ajouter le début du texte de chaque tour après les chronos pour rendre cela plus pratique.
+* Dans l'interface de bornage, ajouter le début du texte de chaque tour après les chronos pour rendre cela plus pratique.
 * Ajouter des liens pour revenir au départ dans l'interface.
-* Dans le menu de sélection des bornes, ajouter l'équivalent des secondes en hh:mm:ss
 * Effacer les fichiers après utilisation.
 * Cliquer sur le texte des boutons radio doit activer ces boutons.
 * Effacer les fichiers une fois le travail terminé.
 * Vérifier la PHPDoc.
-* Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.) 
+* Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.)
+* Safari semble ne pas télécharger correctement les fichiers de sortie.

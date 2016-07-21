@@ -37,6 +37,16 @@ class Fichier extends ModeleAbstrait
      */
     protected $listeLocuteurs = array();
 
+    /**
+     * @var string Le chrono d'où devra commencer le nouveau fichier.
+     */
+    protected $chronoDebut = '';
+
+    /**
+     * @var string Le chrono où s'arrêtera le nouveau fichier.
+     */
+    protected $chronoFin = '';
+
 
     /**
      * Fichier constructor. Hop hop, le constructeur gère tout et appelle toutes les classes nécessaires.
@@ -212,6 +222,8 @@ class Fichier extends ModeleAbstrait
 
     public function reconstruction($donnees, $chronoDebut, $chronoFin, $choixSynchro)
     {
+        $this->chronoDebut = $chronoDebut;
+        $this->chronoFin   = $chronoFin;
         // Ici, on recréé le contenu d'un fichier .trs en fonction des besoins.
         $texteTRS = '<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Trans SYSTEM "trans-14.dtd">';
@@ -332,6 +344,45 @@ class Fichier extends ModeleAbstrait
     }
 
     /**
+     * Cette classe reçoit en entrée un chrono de type '65.122' et doit le convertir en 00:01:05.122
+     * @param string $chrono
+     * @return string
+     */
+    public function convertirChrono($chrono = '')
+    {
+        $nbTotalDeSecondes = intval($chrono);
+        $decimales = floatval($chrono) - $nbTotalDeSecondes;
+
+        $heures  = floor($nbTotalDeSecondes/3600);
+        $secondesRestantes = $nbTotalDeSecondes - $heures*3600;
+        $minutes = floor($secondesRestantes/60);
+        $secondes = $secondesRestantes - $minutes*60;
+
+        // Ajustements de la taille au format str.
+        if($heures<10)
+        {
+            $heures = '0' . $heures;
+        }
+        if($minutes<10)
+        {
+            $minutes = '0' . $minutes;
+        }
+        if($secondes<10)
+        {
+            $secondes = '0' . $secondes;
+        }
+        // Nettoyage des décimales : 0.25 devient 25
+        $decimales = substr('' . $decimales, 2);
+        if($decimales == '')
+        {
+            $decimales = '00';
+        }
+
+
+        return '[' . $heures . '-' . $minutes . '-' . $secondes . '-' . $decimales .  ']';
+    }
+
+    /**
      * @return string
      */
     public function getEmplacementFichier()
@@ -370,6 +421,24 @@ class Fichier extends ModeleAbstrait
     {
         return $this->nomFichier;
     }
+
+    /**
+     * @return string
+     */
+    public function getChronoDebut()
+    {
+        return $this->chronoDebut;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChronoFin()
+    {
+        return $this->chronoFin;
+    }
+
+
 
 
 

@@ -33,7 +33,9 @@ else if(isset($_POST['fichierDemande']))
     include_once('modele/modele_ModeleFichier.class.php');
     $fichierFinal = new Fichier();
     $contenuDuNouveauFichierTRS = $fichierFinal->reconstruction($_SESSION['donnees'], $_POST['chronoDebut'], $_POST['chronoFin'], $_POST['actionChrono']);
-    $emplacementFichier = $_SERVER["DOCUMENT_ROOT"] . '/coupeTranscriber/resultats/' . $_SESSION['nomFichier'];
+    // Il est plus judicieux d'ajouter les différents chronos au nouveau nom de fichier. Cela sera utile.
+    $nomFichier = basename($_SESSION['nomFichier'], '.trs') . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoDebut()) . '.trs' ;
+    $emplacementFichier = $_SERVER["DOCUMENT_ROOT"] . '/coupeTranscriber/resultats/' . $nomFichier;
     //echo $emplacementFichier;
     file_put_contents($emplacementFichier, $contenuDuNouveauFichierTRS);
     if(file_exists($emplacementFichier))
