@@ -3,6 +3,7 @@
 include_once('modele/modele_ModeleEvent.class.php');
 include_once('modele/modele_ModeleComment.class.php');
 include_once('modele/modele_ModeleWho.class.php');
+include_once('modele/modele_ModeleBackground.class.php');
 
 class Tour
 {
@@ -57,6 +58,11 @@ class Tour
     public function insertionEvent($desc='', $type='', $extent='')
     {
         array_push($this->deroulementDuTour, new Event($desc, $type, $extent));
+    }
+
+    public function insertionBackground($time='', $type='', $level='')
+    {
+        array_push($this->deroulementDuTour, new Background($time, $type, $level));
     }
 
     /**

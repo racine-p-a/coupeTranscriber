@@ -176,6 +176,10 @@ class Fichier extends ModeleAbstrait
                             $nouveauTour->insertionWho($reader->getAttribute('nb'));
                             break;
 
+                        case 'Background':
+                            $nouveauTour->insertionBackground($reader->getAttribute('time'), $reader->getAttribute('type'), $reader->getAttribute('level'));
+                            break;
+
                         // BALÉKOUYE
                         case 'Speakers':
                         case 'Episode':
@@ -274,7 +278,7 @@ class Fichier extends ModeleAbstrait
                 $balisesTRS .= '
             <Turn speaker="' . $tour->getLocuteurs() . '" startTime="' . $chronoDebutTour . '" endTime="' . $chronoFinTour . '">
                 <Sync time="' . $chronoDebutTour . '" />';
-                $balisesTRS .= $this->regenererDeroulementDuTour($tour) . '</Turn>';
+                $balisesTRS .= $this->regenererDeroulementDuTour($tour, $chronoDebut) . '</Turn>';
             }
         }
 
@@ -282,14 +286,14 @@ class Fichier extends ModeleAbstrait
     }
 
 
-    protected function regenererDeroulementDuTour($tour)
+    protected function regenererDeroulementDuTour($tour, $chronoDebut)
     {
         $contenuTour = '';
         foreach($tour->getDeroulementDuTour() as $action)
         {
             if(is_string($action))
             {
-                $contenuTour .= $action;
+                $contenuTour .= str_replace('&', '&amp;', $action);
             }
             else if(get_class($action) == 'Event')
             {
@@ -301,7 +305,11 @@ class Fichier extends ModeleAbstrait
             }
             else if(get_class($action) == 'Who')
             {
-                $contenuTour .= '<Wo nb="' . $action->getNb() . '"/>';
+                $contenuTour .= '<Who nb="' . $action->getNb() . '"/>';
+            }
+            else if(get_class($action) == 'Background')
+            {
+                $contenuTour .= '<Background time="' . floatval($action->getTime())-$chronoDebut . '" type="' . $action->getType() . '" level="' . $action->getLevel() . '"/>';
             }
             else
             {

@@ -11,7 +11,7 @@ class Comment
      */
     public function __construct($desc)
     {
-        $this->desc = $desc;
+        $this->desc = str_replace('&', '&amp;', $desc);
     }
 
     /**

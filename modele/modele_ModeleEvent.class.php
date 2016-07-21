@@ -17,7 +17,7 @@ class Event
      */
     public function __construct($desc, $type, $extent)
     {
-        $this->desc = $desc;
+        $this->desc = str_replace('&', '&amp;', $desc);
         $this->type = $type;
         $this->extent = $extent;
     }

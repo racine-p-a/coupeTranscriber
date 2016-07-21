@@ -46,7 +46,7 @@ Location for Uubuntu users : `/var/www/html/`
 Location for DebIan users : `/var/www/`
 
 Location for Mac and windows users is the root directory of your server MAMP/WAMP.
-- Open your web browser and go to http://localhost/coupeTranscriber/index.php .
+- Open your web browser and go to [http://localhost/coupeTranscriber/index.php](http://localhost/coupeTranscriber/index.php) .
 - Congratulations.
 
 
@@ -69,3 +69,4 @@ TODO
 * Cliquer sur le texte des boutons radio doit activer ces boutons.
 * Effacer les fichiers une fois le travail terminé.
 * Vérifier la PHPDoc.
+* Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.) 
