@@ -192,6 +192,8 @@ class Fichier extends ModeleAbstrait
 
                         // BALÉKOUYE
                         case 'Speakers':
+                        case 'Topics':
+                        case 'Topic':
                         case 'Episode':
                         case 'Section':
                         case 'Sync':
@@ -380,6 +382,17 @@ class Fichier extends ModeleAbstrait
 
 
         return '[' . $heures . '-' . $minutes . '-' . $secondes . '-' . $decimales .  ']';
+    }
+
+    public function nettoyerFichiers($nomFichierDeSortie = '')
+    {
+        // Il faut supprimer le fichier original ainsi que la version découpée.
+
+        // Fichier original
+
+
+        // Fichier de sortie
+
     }
 
     /**

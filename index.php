@@ -51,6 +51,8 @@ else if(isset($_POST['fichierDemande']))
         header('Content-Length: '.filesize($emplacementFichier));
         header('Connection: close');
         readfile($emplacementFichier);
+        // On n'oubliera pas d'effacer les fichiers :
+        $fichierFinal->nettoyerFichiers($nomFichier);
         exit();
     }
 

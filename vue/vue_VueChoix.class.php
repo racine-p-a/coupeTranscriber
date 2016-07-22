@@ -6,6 +6,9 @@ class VueChoix extends VueAbstraite
 {
     protected $corpsHTML = '<!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/css_coupeTranscriber.css">
+    </head>
 <body>
 ';
 
@@ -31,7 +34,10 @@ class VueChoix extends VueAbstraite
             '
         
             <input type="submit" name="fichierDemande" value="Télécharger">
-        </form>
+            <p id="affichageErreurs">
+            </p>
+        </form>' . $this->genererScripts() .
+            '
 </body>
 </html>';
     }
@@ -39,7 +45,7 @@ class VueChoix extends VueAbstraite
     protected function genererListeOptions($listeTours = array(), $nomBalise = '')
     {
         $html = '
-            <select name="' . $nomBalise . '" >';
+            <select onchange="verificationBornes()" id="' . $nomBalise . '" name="' . $nomBalise . '" >';
 
         foreach ($listeTours as $tour)
         {
@@ -57,8 +63,9 @@ class VueChoix extends VueAbstraite
 
     protected function genererBoutonsRadio()
     {
-        $html = '<br><input type="radio" name="actionChrono" value="laisser">Laisser les chronos tels quels<br>
-  <input type="radio" name="actionChrono" value="recalculer" checked>Réinitialiser les chronos : le premier sera à 0 et les suivants seront recalculés<br>';
+        $html = '<br>
+            <input type="radio" name="actionChrono" value="laisser">Laisser les chronos tels quels<br>
+            <input type="radio" name="actionChrono" value="recalculer" checked>Réinitialiser les chronos : le premier sera à 0 et les suivants seront recalculés<br>';
 
         return $html;
     }
@@ -77,6 +84,36 @@ class VueChoix extends VueAbstraite
             '</p>';
         }
         return $html;
+    }
+
+    protected function genererScripts()
+    {
+        // Il n'y a qu'un seul script pour le moment : celui de vérification des bornes. La borne de début doit être
+        // évidemment inférieure à celle de fin.
+
+        // On commence par récupérer les valeurs de chaque select.
+        $scripts = '
+        <script>
+            function verificationBornes()
+            {
+                var valeurDepart = parseFloat(document.getElementById("chronoDebut").value);
+                var valeurFin    = parseFloat(document.getElementById("chronoFin").value);
+                var paragraphe   = document.getElementById("affichageErreurs");
+                if(valeurDepart>valeurFin)
+                {
+                    paragraphe.innerHTML = "<span class=rouge >Le chrono de départ est postérieur au chrono de fin (t2&lt;t1).</span>";
+                }
+                else
+                {
+                    paragraphe.innerHTML = "<span class=vert>Les bornes temporelles sont logiques (t1&lt;t2).</span>";
+                }
+                
+            }
+        
+        </script>';
+
+
+        return $scripts;
     }
 
     /**
