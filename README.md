@@ -68,4 +68,3 @@ TODO
 * Effacer les fichiers une fois le travail terminé.
 * Vérifier la PHPDoc.
 * Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.)
-* Safari semble ne pas télécharger correctement les fichiers de sortie (mimetype ?).

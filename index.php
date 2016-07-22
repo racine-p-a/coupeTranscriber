@@ -45,7 +45,7 @@ else if(isset($_POST['fichierDemande']))
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($emplacementFichier)).' GMT');
         header('Cache-Control: private',false);
-        //header('Content-Type: '.$mime);
+        header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename="'.basename($emplacementFichier).'"');
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: '.filesize($emplacementFichier));
