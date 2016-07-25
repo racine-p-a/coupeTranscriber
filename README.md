@@ -62,9 +62,6 @@ TODO
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac). 
 * Dans l'interface de bornage, ajouter le début du texte de chaque tour après les chronos pour rendre cela plus pratique.
-* Effacer les fichiers après utilisation.
-* Cliquer sur le texte des boutons radio doit activer ces boutons.
-* Effacer les fichiers une fois le travail terminé.
 * Vérifier la PHPDoc.
 * Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.)
 * Corriger la représentation des flottants.

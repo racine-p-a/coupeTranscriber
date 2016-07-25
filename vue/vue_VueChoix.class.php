@@ -65,8 +65,8 @@ class VueChoix extends VueAbstraite
     protected function genererBoutonsRadio()
     {
         $html = '<br>
-            <input type="radio" name="actionChrono" value="laisser">Laisser les chronos tels quels<br>
-            <input type="radio" name="actionChrono" value="recalculer" checked>Réinitialiser les chronos : le premier sera à 0 et les suivants seront recalculés<br>';
+            <input type="radio" name="actionChrono" value="laisser" id="laisser"><label for="laisser">Laisser les chronos tels quels</label><br>
+            <input type="radio" name="actionChrono" value="recalculer" id="recalculer" checked><label for="recalculer">Réinitialiser les chronos : le premier sera à 0 et les suivants seront recalculés</label><br>';
 
         return $html;
     }
