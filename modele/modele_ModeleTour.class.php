@@ -84,7 +84,7 @@ class Tour
      */
     public function setChronoDebut($chronoDebut)
     {
-        $this->chronoDebut = $chronoDebut;
+        $this->chronoDebut = round($chronoDebut, 3);
     }
 
     /**
@@ -92,7 +92,7 @@ class Tour
      */
     public function setChronoFin($chronoFin)
     {
-        $this->chronoFin = $chronoFin;
+        $this->chronoFin = round($chronoFin, 3);
     }
 
     /**
@@ -100,7 +100,7 @@ class Tour
      */
     public function getChronoDebut()
     {
-        return $this->chronoDebut;
+        return round($this->chronoDebut, 3);
     }
 
     /**
@@ -108,7 +108,7 @@ class Tour
      */
     public function getChronoFin()
     {
-        return $this->chronoFin;
+        return round($this->chronoFin, 3);
     }
 
     /**

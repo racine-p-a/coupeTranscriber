@@ -125,7 +125,7 @@ class VueChoix extends VueAbstraite
     protected function convertirChrono($chrono = '')
     {
         $nbTotalDeSecondes = intval($chrono);
-        $decimales = floatval($chrono) - $nbTotalDeSecondes;
+        $decimales = round(floatval($chrono) - $nbTotalDeSecondes, 3);
 
         $heures  = floor($nbTotalDeSecondes/3600);
         $secondesRestantes = $nbTotalDeSecondes - $heures*3600;
