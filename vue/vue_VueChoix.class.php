@@ -10,6 +10,7 @@ class VueChoix extends VueAbstraite
         <link rel="stylesheet" type="text/css" href="css/css_coupeTranscriber.css">
     </head>
 <body>
+<h1><a href="index.php">Retour à la page précédente</a></h1>
 ';
 
     /**

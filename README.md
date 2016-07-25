@@ -41,7 +41,7 @@ For Mac users, you can [download and install MAMP](https://www.mamp.info/en/down
 
 - Just download the zipped project (or git-clone it) ans copy the files on your server root location.
 
-Location for Uubuntu users : `/var/www/html/`
+Location for Ubuntu users : `/var/www/html/`
 
 Location for DebIan users : `/var/www/`
 
@@ -62,9 +62,9 @@ TODO
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac). 
 * Dans l'interface de bornage, ajouter le début du texte de chaque tour après les chronos pour rendre cela plus pratique.
-* Ajouter des liens pour revenir au départ dans l'interface.
 * Effacer les fichiers après utilisation.
 * Cliquer sur le texte des boutons radio doit activer ces boutons.
 * Effacer les fichiers une fois le travail terminé.
 * Vérifier la PHPDoc.
 * Le fichier téléchargé doit être nommé différemment du fichier original (ajout des balises de début et de fin à la fin du nom par ex.)
+* Corriger la représentation des flottants.
