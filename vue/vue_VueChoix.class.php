@@ -38,6 +38,7 @@ class VueChoix extends VueAbstraite
             <p id="affichageErreurs">
             </p>
         </form>' . $this->genererScripts() .
+            $this->genererErreursAffichage() .
             '
 </body>
 </html>';
@@ -51,7 +52,7 @@ class VueChoix extends VueAbstraite
         foreach ($listeTours as $tour)
         {
             $html .='
-                <option value="' . $tour->getChronoDebut() . '">' . $this->convertirChrono($tour->getChronoDebut()) . '</option>';
+                <option value="' . $tour->getChronoDebut() . '">' . $this->convertirChrono($tour->getChronoDebut()) . ' : ' . $this->genererDebutTourEnTexte($tour->getDeroulementDuTour()) . '</option>';
             //var_dump($tour);
             //echo '<br><br>';
         }
@@ -85,6 +86,23 @@ class VueChoix extends VueAbstraite
             '</p>';
         }
         return $html;
+    }
+
+    protected function genererErreursAffichage()
+    {
+        $rapportErreurs = '';
+
+        if(!$this->erreurs == '')
+        {
+            $rapportErreurs .= '
+        <h3>Des erreurs ont été levées durant l\'affichage. Elles ne gêneront pas le découpage du fichier mais nuisent au confort d\'utilisation.
+        <a href="https://github.com/racine-p-a/coupeTranscriber">Reportez-les si possible afin qu\'elles soient corigées.</a></h3>
+            <p>
+                ' . $this->erreurs . '
+            </p>';
+        }
+
+        return $rapportErreurs;
     }
 
     protected function genererScripts()
