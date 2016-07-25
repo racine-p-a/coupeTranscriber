@@ -384,15 +384,15 @@ class Fichier extends ModeleAbstrait
         return '[' . $heures . '-' . $minutes . '-' . $secondes . '-' . $decimales .  ']';
     }
 
-    public function nettoyerFichiers($nomFichierDeSortie = '')
+    public function nettoyerFichiers($nomFichierEnEntree = '', $nomFichierDeSortie = '')
     {
         // Il faut supprimer le fichier original ainsi que la version découpée.
 
         // Fichier original
-
+        exec('rm uploads/' . $nomFichierEnEntree);
 
         // Fichier de sortie
-
+        exec('rm resultats/' . $nomFichierDeSortie);
     }
 
     /**

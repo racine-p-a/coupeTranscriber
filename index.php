@@ -38,6 +38,7 @@ else if(isset($_POST['fichierDemande']))
     $emplacementFichier = $_SERVER["DOCUMENT_ROOT"] . '/coupeTranscriber/resultats/' . $nomFichier;
     //echo $emplacementFichier;
     file_put_contents($emplacementFichier, $contenuDuNouveauFichierTRS);
+
     if(file_exists($emplacementFichier))
     {
         header('Pragma: public');
@@ -52,9 +53,12 @@ else if(isset($_POST['fichierDemande']))
         header('Connection: close');
         readfile($emplacementFichier);
         // On n'oubliera pas d'effacer les fichiers :
-        $fichierFinal->nettoyerFichiers($nomFichier);
+        $fichierFinal->nettoyerFichiers($_SESSION['nomFichier'], $nomFichier);
         exit();
     }
+    /*
+     */
+
 
 }
 else
