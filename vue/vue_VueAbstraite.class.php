@@ -105,11 +105,27 @@ class VueAbstraite
             {
                 $resultatTexte .= $action->getDesc();
             }
+
+            else if(get_class($action) == 'Who')
+            {
+                // BALÉKOUYE.
+            }
+
             else
             {
                 $this->erreurs .= 'Erreur levée : Event inconnu (' . var_export($action, true) . ')<br>';
             }
         }
         return mb_substr($resultatTexte, 0, $nbMaxDeCaracteres);
+    }
+
+    protected function recupererImage($categorieImage)
+    {
+        // On cherche dans le dossier correspondant à la catégorie d'image.
+        // On pioche une image au hasard dans ce dossier.
+        $dossierCorrespondant = 'img/' . $categorieImage . '/';
+        $listeImages = array_slice(scandir($dossierCorrespondant),2);
+        $imageChoisie = array_rand($listeImages, 1);
+        return $listeImages[$imageChoisie];
     }
 }

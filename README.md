@@ -60,5 +60,8 @@ TODO
 ----------------------
 
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
-* Créer un installateur pour DebIan/Ubuntu (éventuellement mac).
+* Ajouter la prise en compte de la norme ICOR.
+* Ajouter le découpage du son.
+* Rendre l'interface moins austère.
 * Vérifier la PHPDoc.
+* Créer un installateur pour DebIan/Ubuntu (éventuellement mac).

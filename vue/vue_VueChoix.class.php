@@ -76,17 +76,22 @@ class VueChoix extends VueAbstraite
     {
         if($erreurs == '')
         {
-            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>';
+            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>
+            <img src="img/succes/' . $this->recupererImage('succes') . '">';
         }
         else
         {
-            $html = '<h4>ATTENTION ! Des erreurs ont été levées durant l\'importation du fichier</h4>
+            $html = '<h4>ATTENTION ! Des erreurs ont été levées durant l\'importation du fichier. <a href="https://github.com/racine-p-a/coupeTranscriber">Prévenez-en l\'auteur de ce logiciel.</a></h4>
+            <img src="img/echec/' . $this->recupererImage('echec') . '">\'
             <p>' .
             $erreurs .
-            '</p>';
+            '</p>
+            ';
         }
         return $html;
     }
+
+
 
     protected function genererErreursAffichage()
     {
@@ -96,7 +101,8 @@ class VueChoix extends VueAbstraite
         {
             $rapportErreurs .= '
         <h3>Des erreurs ont été levées durant l\'affichage. Elles ne gêneront pas le découpage du fichier mais nuisent au confort d\'utilisation.
-        <a href="https://github.com/racine-p-a/coupeTranscriber">Reportez-les si possible afin qu\'elles soient corigées.</a></h3>
+        <a href="https://github.com/racine-p-a/coupeTranscriber">Reportez-les si possible afin qu\'elles soient corrigées.</a></h3>
+            <img src="img/echec/' . $this->recupererImage('echec') . '">
             <p>
                 ' . $this->erreurs . '
             </p>';

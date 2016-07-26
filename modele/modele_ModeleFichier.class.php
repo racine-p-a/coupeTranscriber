@@ -199,6 +199,7 @@ class Fichier extends ModeleAbstrait
                         case 'Sync':
                             break;
 
+
                         default:
                             $this->erreurs .= 'Balise inconnue trouvée : ' . $reader->name . '<br>';
                             break;
