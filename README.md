@@ -60,7 +60,6 @@ TODO
 ----------------------
 
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
-* Ajouter la prise en compte de la norme ICOR.
 * Ajouter le découpage du son.
 * Rendre l'interface moins austère.
 * Vérifier la PHPDoc.

@@ -23,6 +23,11 @@ class Fichier extends ModeleAbstrait
     protected $nomFichier='';
 
     /**
+     * @var string L'extension du fichier. Soit trs soit trico.
+     */
+    protected $extensionFichier = '';
+
+    /**
      * @var array Il s'agit de données présentent dans l'en-tête XML du fichier. Je les entrepose ici faute de mieux.
      */
     protected $metaDonnees = array();
@@ -71,6 +76,7 @@ class Fichier extends ModeleAbstrait
                     // Tout est OK. On peut crécupérer le fichier.
                     $this->emplacementFichier = 'uploads/' . basename($_FILES['fichierADecouper']['name']);
                     $this->nomFichier = basename($_FILES['fichierADecouper']['name']);
+                    $this->extensionFichier = pathinfo($this->nomFichier)['extension'];
                     move_uploaded_file($_FILES['fichierADecouper']['tmp_name'], $this->emplacementFichier);
                     /*
                      *              DÉCOUPAGE
@@ -223,27 +229,33 @@ class Fichier extends ModeleAbstrait
         }
     }
 
-    public function reconstruction($donnees, $chronoDebut, $chronoFin, $choixSynchro)
+    public function reconstruction($donnees, $chronoDebut, $chronoFin, $choixSynchro, $extension = 'trs')
     {
         $this->chronoDebut = $chronoDebut;
         $this->chronoFin   = $chronoFin;
-        // Ici, on recréé le contenu d'un fichier .trs en fonction des besoins.
-        $texteTRS = '<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE Trans SYSTEM "trans-14.dtd">';
+        $dtd = 'trans-14.dtd';
+        if($extension == 'trico')
+        {
+            $dtd = 'transicor.dtd';
+        }
+
+        // Ici, on recréé le contenu d'un fichier .trs ou .trico en fonction des besoins.
+        $texteXML = '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Trans SYSTEM "' . $dtd . '">';
 
         // MÉTADONNÉES
-        $texteTRS .= '
+        $texteXML .= '
 <Trans scribe="' . $donnees->getMetaDonnees()['scribe'] . '" version="' . $donnees->getMetaDonnees()['version'] . '"
        audio_filename="' . $donnees->getMetaDonnees()['audio_filename'] . '"
        version_date="' . $donnees->getMetaDonnees()['version_date'] . '"
        elapsed_time="' . $donnees->getMetaDonnees()['elapsed_time'] . '">';
 
         // LOCUTEURS
-        $texteTRS .= '
+        $texteXML .= '
     <Speakers>';
         foreach($donnees->getListeLocuteurs() as $locuteur)
         {
-            $texteTRS .= '
+            $texteXML .= '
         <Speaker id="' . $locuteur->getId() .
               '" name="' . $locuteur->getName() .
               '" check="' . $locuteur->getCheck() .
@@ -251,22 +263,22 @@ class Fichier extends ModeleAbstrait
               '" accent="' . $locuteur->getAccent() .
               '" scope="' . $locuteur->getSCope() . '" />';
         }
-        $texteTRS .= '
+        $texteXML .= '
     </Speakers>';
 
         // TOURS
-        $texteTRS .= '
+        $texteXML .= '
     <Episode>
         ' . $this->genererBaliseSection($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
-        $texteTRS .= $this->regenererListeTours($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
+        $texteXML .= $this->regenererListeTours($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
 
         // FIN
-        $texteTRS .= '
+        $texteXML .= '
         </Section>
     </Episode>
 </Trans>';
-        //echo $texteTRS;
-        return $texteTRS;
+        //echo $texteXML;
+        return $texteXML;
     }
 
 
@@ -451,6 +463,17 @@ class Fichier extends ModeleAbstrait
     {
         return $this->chronoFin;
     }
+
+    /**
+     * @return string
+     */
+    public function getExtensionFichier()
+    {
+        return $this->extensionFichier;
+    }
+
+
+
 
 
 

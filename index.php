@@ -32,9 +32,20 @@ else if(isset($_POST['fichierDemande']))
     // Commençons par recréer le fichier en fonction des bornes choisies
     include_once('modele/modele_ModeleFichier.class.php');
     $fichierFinal = new Fichier();
-    $contenuDuNouveauFichierTRS = $fichierFinal->reconstruction($_SESSION['donnees'], $_POST['chronoDebut'], $_POST['chronoFin'], $_POST['actionChrono']);
+    $contenuDuNouveauFichierTRS = $fichierFinal->reconstruction($_SESSION['donnees'], $_POST['chronoDebut'], $_POST['chronoFin'], $_POST['actionChrono'], pathinfo($_SESSION['nomFichier'])['extension']);
     // Il est plus judicieux d'ajouter les différents chronos au nouveau nom de fichier. Cela sera utile.
-    $nomFichier = basename($_SESSION['nomFichier'], '.trs') . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoDebut()) . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoFin()) . '.trs' ;
+    if(pathinfo($_SESSION['nomFichier'])['extension'] == 'trs')
+    {
+        $nomFichier = basename($_SESSION['nomFichier'], '.trs') . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoDebut()) . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoFin()) . '.trs';
+    }
+    else if(pathinfo($_SESSION['nomFichier'])['extension'] == 'trico')
+    {
+        $nomFichier = basename($_SESSION['nomFichier'], '.trico') . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoDebut()) . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoFin()) . '.trico';
+    }
+    else
+    {
+        $nomFichier = basename($_SESSION['nomFichier'], '.trs') . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoDebut()) . '_' . $fichierFinal->convertirChrono($fichierFinal->getChronoFin()) . '.' . pathinfo($_SESSION['nomFichier'])['extension'];
+    }
     $emplacementFichier = $_SERVER["DOCUMENT_ROOT"] . '/coupeTranscriber/resultats/' . $nomFichier;
     //echo $emplacementFichier;
     file_put_contents($emplacementFichier, $contenuDuNouveauFichierTRS);
