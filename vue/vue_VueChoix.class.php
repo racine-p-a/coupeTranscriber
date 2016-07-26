@@ -76,8 +76,22 @@ class VueChoix extends VueAbstraite
     {
         if($erreurs == '')
         {
-            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>
-            <img src="img/succes/' . $this->recupererImage('succes') . '">';
+            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>';
+            $nomImage = $this->recupererImage('succes');
+            if(strtolower(pathinfo('img/succes/' . $nomImage)['extension']) == 'mp4')
+            {
+                $html .= '
+                <video width="320" height="240" autoplay loop>
+                    <source src="img/succes/' . $nomImage . '" type="video/mp4">
+                </video> ';
+            }
+            else
+            {
+                $html .= '<img src="img/succes/' . $nomImage . '">';
+            }
+
+
+
         }
         else
         {
