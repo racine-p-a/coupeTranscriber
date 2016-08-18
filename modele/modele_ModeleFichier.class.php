@@ -176,7 +176,8 @@ class Fichier extends ModeleAbstrait
         $xml_consts = $refl->getConstants();
         $xml = file_get_contents($this->emplacementFichier);
         $reader = new XMLReader();
-        $reader->XML($xml);
+        $reader->XML($xml, NULL, LIBXML_NOWARNING|LIBXML_NOERROR ); // Faire sauter tous les paramètres sauf un pour
+                                                                    // voir les erreurs inhérentes au fichier.
 
         // On s'en fout si la dtd est absente.
         $reader->setParserProperty(XMLReader::VALIDATE, false);

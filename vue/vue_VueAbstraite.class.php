@@ -125,7 +125,11 @@ class VueAbstraite
         // On pioche une image au hasard dans ce dossier.
         $dossierCorrespondant = 'img/' . $categorieImage . '/';
         $listeImages = array_slice(scandir($dossierCorrespondant),2);
-        $imageChoisie = array_rand($listeImages, 1);
-        return $listeImages[$imageChoisie];
+        if(count($listeImages)>1)
+        {
+            $imageChoisie = array_rand($listeImages, 1);
+            return $listeImages[$imageChoisie];
+        }
+        return '';
     }
 }

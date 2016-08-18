@@ -60,7 +60,7 @@ TODO
 ----------------------
 
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
-* Ajouter le découpage du son.
+* Application REST. (en cours)
 * Rendre l'interface moins austère.
 * Vérifier la PHPDoc.
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac).
