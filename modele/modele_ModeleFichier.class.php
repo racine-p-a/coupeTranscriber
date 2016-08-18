@@ -8,9 +8,14 @@ include_once('modele/modele_ModeleLocuteur.class.php');
 class Fichier extends ModeleAbstrait
 {
     /**
-     * @var int La taille maximale de fichier acceptée. À modifier par l'utilisateur si il en a besoin.
+     * @var int La taille maximale de fichier (de transcription) acceptée. À modifier par l'utilisateur si il en a besoin.
      */
-    protected $limiteTailleDeFichier = 2000000; // Soit à peu près 2Mo par fichier à une vache près.
+    protected $limiteTailleDeFichierTranscription = 2000000; // Soit à peu près 2Mo par fichier à une vache près.
+
+    /**
+     * @var int La taille maximale de fichier (sonore) acceptée. À modifier par l'utilisateur si il en a besoin.
+     */
+    protected $limiteTailleDeFichierSonore = 100000000;
 
     /**
      * @var string L'emplacement du fichier à étudier et découper.
@@ -52,59 +57,116 @@ class Fichier extends ModeleAbstrait
      */
     protected $chronoFin = '';
 
+    /**
+     * @var string La transcription peut être lie à un fichier sonore qu'il faudra alors découpé comme la transcription.
+     */
+    protected $fichierSonAssocie = '';
 
     /**
-     * Fichier constructor. Hop hop, le constructeur gère tout et appelle toutes les classes nécessaires.
+     * @var string L'emplacement du fichier sonore(extension comprise).
      */
-    public function __construct()
+    protected $emplacementFichierSonAssocie = '';
+
+    /**
+     * @var string L'utilisateur souhaite-t-il recaler les sons ? String pour le moment, TODO Bool plus tard.
+     */
+    protected $choixSynchro = '';
+
+    /**
+     * @var string L'emplacement complet du fichier final.
+     */
+    protected $fichierFinal = '';
+
+
+    /**
+     * Fichier constructor. Hop hop, le constructeur gère tout et appelle toutes les classes/méthodes nécessaires.
+     */
+    public function __construct($donnees = '')
     {
-        /*
-         *                          UPLOAD
-         */
-        // On commence par récupérer le fichier
-        if (isset($_FILES['fichierADecouper']) AND $_FILES['fichierADecouper']['error'] == 0)
+        if($donnees != '')
         {
-            // Testons si le fichier n'est pas trop gros
-            if ($_FILES['monfichier']['size'] <= $this->limiteTailleDeFichier)
-            {
-                // Testons si l'extension est autorisée
-                $infosfichier = pathinfo($_FILES['fichierADecouper']['name']);
-                $extension_upload = strtolower($infosfichier['extension']);
-                $extensions_autorisees = array('trs', 'trico');
-                if (in_array($extension_upload, $extensions_autorisees))
-                {
-                    // Tout est OK. On peut crécupérer le fichier.
-                    $this->emplacementFichier = 'uploads/' . basename($_FILES['fichierADecouper']['name']);
-                    $this->nomFichier = basename($_FILES['fichierADecouper']['name']);
-                    $this->extensionFichier = pathinfo($this->nomFichier)['extension'];
-                    move_uploaded_file($_FILES['fichierADecouper']['tmp_name'], $this->emplacementFichier);
-                    /*
-                     *              DÉCOUPAGE
-                     */
-                    // On a le fichier, y a plus qu'à l'éplucher tour par tour.
-                    $this->parcourirFichier();
-                }
-                else
-                {
-                    $this->erreurs .= 'Erreur : Le fichier que vous avez envoyé n\'est pas une extension autorisée : ' . $extension_upload . '<br>';
-                }
-            }
-            else
-            {
-                $this->erreurs .= 'Erreur : Le fichier est certainement trop gros. Résolvez ce problème ainsi :
-                <ol>
-                    <li>Augmentez la taille des fichiers que votre serveur (Apache ou autre) peut accepter.</li>
-                    <li>Augmentez la limite de taille des fichiers à accepter dans la classe « Fichier » située dans « coupeTranscriber/modele/modele_ModeleFichier.class.php »</li>
-                </ol>
-                <br>';
-            }
+            $this->nomFichier                   = $donnees['nomFichierTranscription'];
+            $this->emplacementFichier           = 'uploads/' . $this->nomFichier;
+            $this->extensionFichier             = pathinfo($this->nomFichier)['extension'];
+            $this->fichierSonAssocie            = $donnees['nomFichierSonore'];
+            $this->emplacementFichierSonAssocie = getcwd() . '/uploads/' . $this->fichierSonAssocie;
+            $this->chronoDebut                  = $donnees['chronoDebut'];
+            $this->chronoFin                    = $donnees['chronoFin'];
+            $this->choixSynchro                 = $donnees['actionChrono'];
+            $this->parcourirFichier();
+            $this->creerResultat($this->reconstruction());
         }
         else
         {
-            $this->erreurs .= 'Erreur lors de la transmission du fichier<br>';
+            $this->upload();
+            $this->parcourirFichier();
         }
         //var_dump($this->listeTours);
     }
+
+    protected function creerResultat($texteTranscription)
+    {
+        /*
+         * Cas :
+         * - Une transcription seule --> On créé un fichier vide, on écrit le texte dedans et on lance le téléchargement.
+         * - Une transcription + un fichier sonore --> Pareil que ci-dessus + découpage du fichier sonore, création
+         *   d'une archive contenant les deux fichiers nouvellement créés (transcription et son découpé)
+         */
+
+        /*****************************************
+         *              TRANSCRIPTION
+         *****************************************/
+        // Dans tous les cas, on commence par créer le nouveau fichier de transcription.
+        $emplacementResultatTranscription = getcwd() . '/resultats/' . $this->nomFichier;
+        file_put_contents($emplacementResultatTranscription, $texteTranscription);
+        $this->fichierFinal = $emplacementResultatTranscription;
+
+        /*****************************************
+         *              AUDIO
+         *****************************************/
+        if($this->fichierSonAssocie != '')
+        {
+            // On découpe le fichier son selon les deux balises de temps reçue.
+
+            // COMMANDE
+            // avconv -y -ss debutSequenceEnSecondes -i fichierSource -t dureeDeLaSectionADecouper -vcodec copy -acodec copy fichierSortie
+            // -vcodec copy -acodec copy  <-- Signifie qu'on garde les codecs tels quels. Pas de conversion/transcodage.
+            // -y pour écraser un éventuel fichier déjà présent.
+            $duree = floatval($this->chronoFin) - floatval($this->chronoDebut);
+            $fichierSonDeSortie = getcwd() . '/resultats/' . $this->fichierSonAssocie;
+            $fichierlog = getcwd() . '/resultats/logs.txt';
+            $commande = 'avconv -y -ss ' . $this->chronoDebut . ' -i ' . $this->emplacementFichierSonAssocie . ' -t ' .
+                        $duree . ' -vcodec copy -acodec copy ' . $fichierSonDeSortie . ' 2>' . $fichierlog;
+            //echo $commande;
+            exec($commande);
+        /*****************************************
+        *              ARCHIVE
+        *****************************************/
+            // L'archive contient la transcription et le fichier sonore. Elle n'est créée que lorsque un fichier sonore est demandé.
+            $emplacementArchive = getcwd() . '/resultats/' . $this->nomFichier . '.zip';
+            $commande = '7z a ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
+            //echo $commande;
+            exec($commande);
+
+            // Les deux fichiers sont à présent dans l'archive. On peut les supprimer du dossier /résultats.
+            $commande = 'rm ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
+            exec($commande);
+
+            $this->fichierFinal = $emplacementArchive;
+        }
+
+        // Vidons également le dossier /uploads.
+        $commande = 'rm ' . $this->emplacementFichier . ' ' . $this->emplacementFichierSonAssocie;
+        exec($commande);
+    }
+
+    public function effacerFichierFinal()
+    {
+        $commande = 'rm ' . $this->fichierFinal;
+        exec($commande);
+    }
+
+
 
 
     protected function parcourirFichier()
@@ -112,7 +174,6 @@ class Fichier extends ModeleAbstrait
         // On parcourt le fichier pour en extraire les tours.
         $refl = new ReflectionClass('XMLReader');
         $xml_consts = $refl->getConstants();
-
         $xml = file_get_contents($this->emplacementFichier);
         $reader = new XMLReader();
         $reader->XML($xml);
@@ -121,6 +182,14 @@ class Fichier extends ModeleAbstrait
         $reader->setParserProperty(XMLReader::VALIDATE, false);
 
         $nouveauTour = new Tour();
+
+        //              MÉTADONNÉES
+        $this->metaDonnees['scribe']         = '';
+        $this->metaDonnees['version']        = '';
+        $this->metaDonnees['audio_filename'] = '';
+        $this->metaDonnees['version_date']   = '';
+        $this->metaDonnees['elapsed_time']   = '';
+
 
         while ($reader->read())
         {
@@ -229,12 +298,10 @@ class Fichier extends ModeleAbstrait
         }
     }
 
-    public function reconstruction($donnees, $chronoDebut, $chronoFin, $choixSynchro, $extension = 'trs')
+    public function reconstruction()
     {
-        $this->chronoDebut = $chronoDebut;
-        $this->chronoFin   = $chronoFin;
         $dtd = 'trans-14.dtd';
-        if($extension == 'trico')
+        if($this->extensionFichier == 'trico')
         {
             $dtd = 'transicor.dtd';
         }
@@ -245,15 +312,15 @@ class Fichier extends ModeleAbstrait
 
         // MÉTADONNÉES
         $texteXML .= '
-<Trans scribe="' . $donnees->getMetaDonnees()['scribe'] . '" version="' . $donnees->getMetaDonnees()['version'] . '"
-       audio_filename="' . $donnees->getMetaDonnees()['audio_filename'] . '"
-       version_date="' . $donnees->getMetaDonnees()['version_date'] . '"
-       elapsed_time="' . $donnees->getMetaDonnees()['elapsed_time'] . '">';
+<Trans scribe="' . $this->getMetaDonnees()['scribe'] . '" version="' . $this->getMetaDonnees()['version'] . '"
+       audio_filename="' . $this->getMetaDonnees()['audio_filename'] . '"
+       version_date="' . $this->getMetaDonnees()['version_date'] . '"
+       elapsed_time="' . $this->getMetaDonnees()['elapsed_time'] . '">';
 
         // LOCUTEURS
         $texteXML .= '
     <Speakers>';
-        foreach($donnees->getListeLocuteurs() as $locuteur)
+        foreach($this->getListeLocuteurs() as $locuteur)
         {
             $texteXML .= '
         <Speaker id="' . $locuteur->getId() .
@@ -269,8 +336,8 @@ class Fichier extends ModeleAbstrait
         // TOURS
         $texteXML .= '
     <Episode>
-        ' . $this->genererBaliseSection($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
-        $texteXML .= $this->regenererListeTours($donnees->getListeTours(), $chronoDebut, $chronoFin, $choixSynchro);
+        ' . $this->genererBaliseSection($this->getListeTours(), $this->chronoDebut, $this->chronoFin, $this->choixSynchro);
+        $texteXML .= $this->regenererListeTours($this->getListeTours(), $this->chronoDebut, $this->chronoFin, $this->choixSynchro);
 
         // FIN
         $texteXML .= '
@@ -397,15 +464,82 @@ class Fichier extends ModeleAbstrait
         return '[' . $heures . '-' . $minutes . '-' . $secondes . '-' . $decimales .  ']';
     }
 
-    public function nettoyerFichiers($nomFichierEnEntree = '', $nomFichierDeSortie = '')
+
+    protected function upload()
     {
-        // Il faut supprimer le fichier original ainsi que la version découpée.
-
-        // Fichier original
-        exec('rm uploads/' . $nomFichierEnEntree);
-
-        // Fichier de sortie
-        exec('rm resultats/' . $nomFichierDeSortie);
+        // Il y a au moins un fichier de transcription à récupérer et potentiellement un fichier son également.
+        // On commence par récupérer le fichier
+        if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscription']['error'] == 0)
+        {
+            // Testons si le fichier n'est pas trop gros
+            if ($_FILES['fichierTranscription']['size'] <= $this->limiteTailleDeFichierTranscription)
+            {
+                // Testons si l'extension est autorisée
+                $infosfichier = pathinfo($_FILES['fichierTranscription']['name']);
+                $extension_upload = strtolower($infosfichier['extension']);
+                $extensions_autorisees = array('trs', 'trico');
+                if (in_array($extension_upload, $extensions_autorisees))
+                {
+                    // Tout est OK. On peut crécupérer le fichier.
+                    $this->emplacementFichier = 'uploads/' . basename($_FILES['fichierTranscription']['name']);
+                    $this->nomFichier = basename($_FILES['fichierTranscription']['name']);
+                    $this->extensionFichier = pathinfo($this->nomFichier)['extension'];
+                    move_uploaded_file($_FILES['fichierTranscription']['tmp_name'], $this->emplacementFichier);
+                }
+                else
+                {
+                    $this->erreurs .= 'Erreur : Le fichier que vous avez envoyé n\'est pas une extension autorisée : ' . $extension_upload . '<br>';
+                }
+            }
+            else
+            {
+                $this->erreurs .= 'Erreur : Le fichier de transcription est certainement trop gros. Résolvez ce problème ainsi :
+                <ol>
+                    <li>Augmentez la taille des fichiers que votre serveur (Apache ou autre) peut accepter.</li>
+                    <li>Augmentez la limite de taille des fichiers à accepter dans la classe « Fichier » située dans « coupeTranscriber/modele/modele_ModeleFichier.class.php »</li>
+                </ol>
+                <br>';
+            }
+        }
+        else
+        {
+            $this->erreurs .= 'Erreur lors de la transmission du fichier de transcriptions.<br>';
+        }
+        /*
+         *                          FICHIER SONORE
+         */
+        if (isset($_FILES['fichierSonore']) AND $_FILES['fichierSonore']['error'] == 0)
+        {
+            // Testons si le fichier n'est pas trop gros
+            if ($_FILES['fichierSonore']['size'] <= $this->limiteTailleDeFichierSonore)
+            {
+                // Testons si l'extension est autorisée
+                $infosfichier = pathinfo($_FILES['fichierSonore']['name']);
+                $extension_upload = strtolower($infosfichier['extension']);
+                $extensions_autorisees = array('wav', 'mp3', 'ogg');
+                if (in_array($extension_upload, $extensions_autorisees))
+                {
+                    // Tout est OK. On peut crécupérer le fichier.
+                    $this->emplacementFichierSonAssocie = getcwd() . '/uploads/' . basename($_FILES['fichierSonore']['name']);
+                    $this->fichierSonAssocie = basename($_FILES['fichierSonore']['name']);
+                    $this->extensionFichier = pathinfo($this->nomFichier)['extension'];
+                    move_uploaded_file($_FILES['fichierSonore']['tmp_name'], $this->emplacementFichierSonAssocie);
+                }
+                else
+                {
+                    $this->erreurs .= 'Erreur : Le fichier sonore que vous avez envoyé n\'est pas une extension autorisée : ' . $extension_upload . '<br>';
+                }
+            }
+            else
+            {
+                $this->erreurs .= 'Erreur : Le fichier sonore est certainement trop gros. Résolvez ce problème ainsi :
+                <ol>
+                    <li>Augmentez la taille des fichiers que votre serveur (Apache ou autre) peut accepter.</li>
+                    <li>Augmentez la limite de taille des fichiers à accepter dans la classe « Fichier » située dans « coupeTranscriber/modele/modele_ModeleFichier.class.php »</li>
+                </ol>
+                <br>';
+            }
+        }
     }
 
     /**
@@ -472,12 +606,51 @@ class Fichier extends ModeleAbstrait
         return $this->extensionFichier;
     }
 
+    /**
+     * @return int
+     */
+    public function getLimiteTailleDeFichierTranscription()
+    {
+        return $this->limiteTailleDeFichierTranscription;
+    }
 
+    /**
+     * @return int
+     */
+    public function getLimiteTailleDeFichierSonore()
+    {
+        return $this->limiteTailleDeFichierSonore;
+    }
 
+    /**
+     * @return string
+     */
+    public function getFichierSonAssocie()
+    {
+        return $this->fichierSonAssocie;
+    }
 
+    /**
+     * @return string
+     */
+    public function getEmplacementFichierSonAssocie()
+    {
+        return $this->emplacementFichierSonAssocie;
+    }
 
+    /**
+     * @return string
+     */
+    public function getChoixSynchro()
+    {
+        return $this->choixSynchro;
+    }
 
-
-
-
+    /**
+     * @return string
+     */
+    public function getFichierFinal()
+    {
+        return $this->fichierFinal;
+    }
 }

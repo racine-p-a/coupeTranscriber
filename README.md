@@ -64,3 +64,4 @@ TODO
 * Rendre l'interface moins austère.
 * Vérifier la PHPDoc.
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac).
+* Vérifier en js les formats données dans les formulaires.

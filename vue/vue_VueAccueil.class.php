@@ -13,11 +13,14 @@ class VueAccueil extends VueAbstraite
 <html>
 <body>
 
-    <h1>Importez le fichier transcriber que vous souhaitez découper.</h1>
+    <h2>Importez le fichier transcriber que vous souhaitez découper.</h2>
 
     <form action="index.php" enctype="multipart/form-data" method="post" >
     
-        <input type="file" name="fichierADecouper" id="fichierADecouper"><br>
+        <input type="file" name="fichierTranscription" id="fichierTranscription" required><br>
+    
+        <h3>Vous pouvez également importer un fichier sonore avec afin qu\'il soit découpé aussi.</h3>
+        <input type="file" name="fichierSonore" id="fichierSonore"><br>
     
         <input type="submit" name="envoiFichier" value="Envoyer">
     

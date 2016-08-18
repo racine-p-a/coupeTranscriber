@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 include_once('vue/vue_VueAbstraite.class.php');
 
 class VueChoix extends VueAbstraite
@@ -23,10 +24,13 @@ class VueChoix extends VueAbstraite
         // - Un pour choisir le début de la transcription
         // - Un autre pour en choisir la fin.
         // On ajoutera également une case cochée par défaut qui réinitialisera/recalculera tous les chronos de la portion choisie.
+
         $this->corpsHTML .= $this->genererRapportErreurs($donneesFichier->getErreurs()) . '
     <h1>Comment souhaitez-vous borner la transcription ?</h1>
         <form action="index.php" enctype="multipart/form-data" method="post" >
         <h3>Début</h3>
+            <input type="hidden" name="nomFichierTranscription" value="' . $donneesFichier->getNomFichier() . '">
+            <input type="hidden" name="nomFichierSonore"        value="' . $donneesFichier->getFichierSonAssocie() . '">
         ' . $this->genererListeOptions($donneesFichier->getListeTours(), 'chronoDebut') . '
         <h3>Fin</h3>' .
             $this->genererListeOptions($donneesFichier->getListeTours(), 'chronoFin') .
@@ -42,6 +46,8 @@ class VueChoix extends VueAbstraite
             '
 </body>
 </html>';
+        /*
+         */
     }
 
     protected function genererListeOptions($listeTours = array(), $nomBalise = '')
