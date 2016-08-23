@@ -12,8 +12,8 @@ ffmpeg version 2.8.6-1ubuntu2 Copyright (c) 2000-2016 the FFmpeg developers
   libswscale      3.  1.101 /  3.  1.101
   libswresample   1.  2.101 /  1.  2.101
   libpostproc    53.  3.100 / 53.  3.100
-[mp3 @ 0x21a28a0] Skipping 0 bytes of junk at 0.
-[mp3 @ 0x21a28a0] Estimating duration from bitrate, this may be inaccurate
+[mp3 @ 0xd9c8a0] Skipping 0 bytes of junk at 0.
+[mp3 @ 0xd9c8a0] Estimating duration from bitrate, this may be inaccurate
 Input #0, mp3, from '/var/www/html/dev_coupeTranscriber/uploads/WanChaiExtended.mp3':
   Duration: 00:08:07.42, start: 0.000000, bitrate: 160 kb/s
     Stream #0:0: Audio: mp3, 44100 Hz, stereo, s16p, 160 kb/s

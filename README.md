@@ -60,8 +60,8 @@ TODO
 ----------------------
 
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
-* Application REST. (en cours)
 * Rendre l'interface moins austère.
 * Vérifier la PHPDoc.
+* (Ré-)Écrire la documentaton.
 * Créer un installateur pour DebIan/Ubuntu (éventuellement mac).
 * Vérifier en js les formats données dans les formulaires.

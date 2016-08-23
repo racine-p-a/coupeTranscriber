@@ -57,9 +57,13 @@ if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscription']['
         //header('Content-Length: '.filesize($emplacementFichierATelecharger));
         header('Connection: close');
         readfile($emplacementFichierATelecharger);
+        $donneesFichierFinal->effacerFichierFinal();
         exit();
     }
-    /*      TRANSCRIPTION
+
+    // Exemples de commande curl pour contacter cette page :
+
+    /*      TRANSCRIPTION SEULE
     curl \
     -F "fichierTranscription=@/home/pracine/Téléchargements/Aperitif-chat.trs" \
     -F "chronoDebut=0" \
@@ -90,17 +94,18 @@ else if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscriptio
 {
     // Ici, on a reçu juste des fichiers, c'est donc que l'utilisateur souhaite la liste des balises temporelles.
     $donnees = new Fichier();
-    //$tableauChronos = ;
     echo implode(';', $donnees->getListeBalisesTemporelles());
 
+    // Pensons à effacer la transcription reçue.
+    $commande = 'rm uploads/' . $donnees->getNomFichier();
+    exec($commande);
+
+    // Exemple de commande curl pour contacter cette page :
     /*
      curl \
     -F "fichierTranscription=@/home/pracine/Téléchargements/Aperitif-chat.trs" \
      http://localhost/dev_coupeTranscriber/rest.ph
      */
-
-
-
 }
 else
 {
