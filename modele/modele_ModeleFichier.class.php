@@ -68,7 +68,7 @@ class Fichier extends ModeleAbstrait
     protected $emplacementFichierSonAssocie = '';
 
     /**
-     * @var string L'utilisateur souhaite-t-il recaler les sons ? String pour le moment, TODO Bool plus tard.
+     * @var string L'utilisateur souhaite-t-il recaler les sons ? String pour le moment, TODO Bool plus tard ?
      */
     protected $choixSynchro = '';
 
@@ -85,6 +85,7 @@ class Fichier extends ModeleAbstrait
     {
         if($donnees != '')
         {
+            echo $donnees['nomFichierTranscription'];
             $this->nomFichier                   = $donnees['nomFichierTranscription'];
             $this->emplacementFichier           = 'uploads/' . $this->nomFichier;
             $this->extensionFichier             = pathinfo($this->nomFichier)['extension'];
@@ -167,8 +168,9 @@ class Fichier extends ModeleAbstrait
     }
 
 
-
-
+    /**
+     * Cette classe parcourt le fichier reçu (trs ou trico) et en extrait toutes les données posibles.
+     */
     protected function parcourirFichier()
     {
         // On parcourt le fichier pour en extraire les tours.
@@ -176,8 +178,8 @@ class Fichier extends ModeleAbstrait
         $xml_consts = $refl->getConstants();
         $xml = file_get_contents($this->emplacementFichier);
         $reader = new XMLReader();
-        $reader->XML($xml, NULL, LIBXML_NOWARNING|LIBXML_NOERROR ); // Faire sauter tous les paramètres sauf un pour
-                                                                    // voir les erreurs inhérentes au fichier.
+        $reader->XML($xml, NULL, LIBXML_NOWARNING|LIBXML_NOERROR ); // Faire sauter tous les paramètres sauf le premier
+                                                                    // pour voir les erreurs inhérentes au fichier.
 
         // On s'en fout si la dtd est absente.
         $reader->setParserProperty(XMLReader::VALIDATE, false);
@@ -541,6 +543,28 @@ class Fichier extends ModeleAbstrait
                 <br>';
             }
         }
+    }
+
+    public function getListeBalisesTemporelles()
+    {
+        /*
+         * Pour récupérer la liste des balises, il suffit de parcourir la liste des tours et d'en extraire toutes
+         * les balises de début et de fin.
+         */
+        $listeChronos = array();
+        foreach($this->listeTours as $tour)
+        {
+            if(!in_array($tour->getChronoDebut(), $listeChronos))
+            {
+                array_push($listeChronos, $tour->getChronoDebut());
+            }
+            if(!in_array($tour->getChronoFin(), $listeChronos))
+            {
+                array_push($listeChronos, $tour->getChronoFin());
+            }
+        }
+        sort($listeChronos);
+        return $listeChronos; // On fait un dernier tri au cas où.
     }
 
     /**
