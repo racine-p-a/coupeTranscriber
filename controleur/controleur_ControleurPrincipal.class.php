@@ -1,26 +1,20 @@
 <?php
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Controleur de l'application appelé lors d'un accès par navigateur.
+ */
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+
 include_once(getcwd() . '/modele/modele_ModeleFichier.class.php');
 
 
 class ControleurPrincipal
 {
-    protected $emplacementFichierTranscription = '';
-
-    protected $fichierTranscription;
-
-
-    protected $emplacementFichierSon = '';
-
-    protected $fichierSon;
-
-
-    protected $baliseDebutDemandee = '';
-
-    protected $baliseFinDemandee = '';
-
-    protected $recalageDemande = True;
 
     /**
      * ControleurPrincipal constructor.

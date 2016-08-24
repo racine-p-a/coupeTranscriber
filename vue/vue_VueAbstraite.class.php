@@ -1,17 +1,39 @@
 <?php
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Toutes les vues doivent hériter de celle-ci. En effet, elle a vocation à gérer toutes les parties communes.
+ */
 
 class VueAbstraite
 {
+    /**
+     * @var string Correspond au code HTML tel qu'il sera affiché dans le navigateur.
+     */
     protected $corpsHTML = '';
 
+    /**
+     * @var string La concaténation de toutes les erreurs levées par la(les) vue(s) dans un format compréhensible
+     * par l'utilisateur.
+     */
     protected $erreurs = '';
 
+    /**
+     * @return string Renvoie le code HTML généré.
+     */
     public function getVue()
     {
         return $this->corpsHTML;
     }
 
-
+    /**
+     * Pour rendre l'interface plus intuitive, on fait apparaître dans les menus de sélection le début du texte du tour.
+     * Cette méthode permet de générer ce texte.
+     * @param $deroulementDuTour array Le déroulement complet du tour.
+     * @return string Le texte correspondant à ce début de tour.
+     */
     protected function genererDebutTourEnTexte($deroulementDuTour)
     {
         $resultatTexte = '';
@@ -119,6 +141,11 @@ class VueAbstraite
         return mb_substr($resultatTexte, 0, $nbMaxDeCaracteres);
     }
 
+    /**
+     * Clin d'œil/ Easter Egg
+     * @param $categorieImage succes/echec ou tout autre texte qui correspond à un nom de dossier dans le dossier img/.
+     * @return mixed|string Le nom de l'image choisie.
+     */
     protected function recupererImage($categorieImage)
     {
         // On cherche dans le dossier correspondant à la catégorie d'image.
@@ -128,7 +155,15 @@ class VueAbstraite
         if(count($listeImages)>1)
         {
             $imageChoisie = array_rand($listeImages, 1);
-            return $listeImages[$imageChoisie];
+            $imageChoisie = $listeImages[$imageChoisie];
+            if($imageChoisie == 'index.php')
+            {
+                return $this->recupererImage($categorieImage);
+            }
+            else
+            {
+                return $imageChoisie;
+            }
         }
         return '';
     }

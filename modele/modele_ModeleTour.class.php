@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Cette classe gère et représente les balises Turn trouvables dans les fichiers .trs et .trico.
+ */
 
 include_once('modele/modele_ModeleEvent.class.php');
 include_once('modele/modele_ModeleComment.class.php');
@@ -41,7 +48,7 @@ class Tour
     }
 
     /**
-     * @param string $texteAAjouter L texte à ajouter au déroulement du tour.
+     * @param string $texteAAjouter Le texte à ajouter au déroulement du tour.
      */
     public function insertionTexte($texteAAjouter = '')
     {
@@ -60,6 +67,12 @@ class Tour
         array_push($this->deroulementDuTour, new Event($desc, $type, $extent));
     }
 
+    /**
+     * Permet d'ajouter un Background dans le déroulement du tour.
+     * @param string $time
+     * @param string $type
+     * @param string $level
+     */
     public function insertionBackground($time='', $type='', $level='')
     {
         array_push($this->deroulementDuTour, new Background($time, $type, $level));
@@ -74,6 +87,10 @@ class Tour
         array_push($this->deroulementDuTour, new Comment($desc));
     }
 
+    /**
+     * Permet d'ajouter un Who dans le déroulement du tour.
+     * @param string $nb
+     */
     public function insertionWho($nb='1')
     {
         array_push($this->deroulementDuTour, new Who($nb));

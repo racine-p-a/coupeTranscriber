@@ -1,16 +1,16 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: pracine
- * Date: 18/08/16
- * Time: 14:41
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Controleur de l'application pour tous les aspets RESTful. Pour une utilisation normale par navigateur,
+ * il est préférable d'utiliser le controleur principal index.php situé dans ce dossier-ci (la racine).
  */
 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 include_once(getcwd() . '/modele/modele_ModeleFichier.class.php');
-
-
 
 
 /*
@@ -86,10 +86,6 @@ if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscription']['
 }
 
 
-
-
-
-
 else if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscription']['error'] == 0)
 {
     // Ici, on a reçu juste des fichiers, c'est donc que l'utilisateur souhaite la liste des balises temporelles.
@@ -104,11 +100,35 @@ else if (isset($_FILES['fichierTranscription']) AND $_FILES['fichierTranscriptio
     /*
      curl \
     -F "fichierTranscription=@/home/pracine/Téléchargements/Aperitif-chat.trs" \
-     http://localhost/dev_coupeTranscriber/rest.ph
+     http://localhost/dev_coupeTranscriber/rest.php
      */
 }
 else
 {
-    echo 'Paramètres reçus incohérents.';
-
+    $texteErreur  = "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= 'Paramètres reçus incohérents.' . "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= 'Exemple (remplacez uniquement les données en majuscules) :' . "\n";
+    $texteErreur .= 'Pour récupérer la liste de tous les chronos d\'un fichier .trs ou .trico :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/CHEMIN/POUR/ACCÉDER/À/VOTRE/FICHIER/VOTREFICHIER" http://ADRESSEDEVOTRESERVEUR/dev_coupeTranscriber/rest.php ' . "\n";
+    $texteErreur .= 'Ce qui pourrait, par exemple, donner :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/home/pracine/Téléchargements/conversation_montmartre.trs" http://localhost/dev_coupeTranscriber/rest.php' . "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= 'Exemple :' . "\n";
+    $texteErreur .= 'Pour lancer un découpage d\'une transcription (remplacez uniquement les données en majuscules) :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/CHEMIN/POUR/ACCÉDER/À/VOTRE/FICHIER/VOTREFICHIER" -F "chronoDebut=DÉBUTDUDÉCOUPAGE" -F "chronoFin=FINDUDÉCOUPAGE" -F "actionChrono=ÉCRIRERECALCULEROULAISSER" -o /CHEMIN/SUR/VOTRE/MACHINE/OÙ/TÉLÉCHARGER/CE/FICHIER/NOMDUFICHIER http://ADRESSEDEVOTRESERVEUR/dev_coupeTranscriber/rest.php ' . "\n";
+    $texteErreur .= 'Ce qui pourrait, par exemple, donner :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/home/pracine/Téléchargements/conversation_montmartre.trs" -F "chronoDebut=0" -F "chronoFin=10" -F "actionChrono=recalculer" -o /home/pracine/monArchive.trs http://localhost/dev_coupeTranscriber/rest.php' . "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= 'Exemple :' . "\n";
+    $texteErreur .= 'Pour lancer un découpage d\'une transcription mais également un fichier son correspondant (remplacez uniquement les données en majuscules) :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/CHEMIN/POUR/ACCÉDER/À/VOTRE/FICHIER/VOTREFICHIER" -F "chronoDebut=DÉBUTDUDÉCOUPAGE" -F "chronoFin=FINDUDÉCOUPAGE" -F "actionChrono=ÉCRIRERECALCULEROULAISSER" -o /CHEMIN/SUR/VOTRE/MACHINE/OÙ/TÉLÉCHARGER/CE/FICHIER/NOMDUFICHIER http://ADRESSEDEVOTRESERVEUR/dev_coupeTranscriber/rest.php ' . "\n";
+    $texteErreur .= 'Ce qui pourrait, par exemple, donner :' . "\n";
+    $texteErreur .= 'curl -F "fichierTranscription=@/home/pracine/Téléchargements/conversation_montmartre.trs" -F "fichierSonore=@/home/pracine/Téléchargements/conversation_montmartre.mp3" -F "chronoDebut=0" -F "chronoFin=10" -F "actionChrono=laisser" -o /home/pracine/monArchive.trs http://localhost/dev_coupeTranscriber/rest.php' . "\n";
+    $texteErreur .= "\n";
+    $texteErreur .= "\n";
+    echo $texteErreur;
 }

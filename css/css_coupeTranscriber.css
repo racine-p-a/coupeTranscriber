@@ -1,3 +1,10 @@
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Unique feuille de style de l'application.
+ */
 .rouge
 {
     color: red;
@@ -12,4 +19,20 @@ img
 {
     max-height: 300px;
     max-width: 300px;
+}
+
+body
+{
+    margin-top : 25px;
+    margin-left: 6%;
+}
+
+form
+{
+    margin-left: 25px;
+}
+
+input
+{
+    margin : 10px;
 }

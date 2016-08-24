@@ -1,7 +1,13 @@
 <?php
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Cette classe gère entièrement les fichiers qui seront reçus et créés par l'application.
+ */
 
 include_once('modele/modele_ModeleAbstrait.class.php');
-
 include_once('modele/modele_ModeleTour.class.php');
 include_once('modele/modele_ModeleLocuteur.class.php');
 
@@ -9,71 +15,93 @@ class Fichier extends ModeleAbstrait
 {
     /**
      * @var int La taille maximale de fichier (de transcription) acceptée. À modifier par l'utilisateur si il en a besoin.
+     * @example 2000000
      */
     protected $limiteTailleDeFichierTranscription = 2000000; // Soit à peu près 2Mo par fichier à une vache près.
 
     /**
      * @var int La taille maximale de fichier (sonore) acceptée. À modifier par l'utilisateur si il en a besoin.
+     * @example 100000000
      */
     protected $limiteTailleDeFichierSonore = 100000000;
 
     /**
      * @var string L'emplacement du fichier à étudier et découper.
+     * @example '/home/Documents/monDocument.trs'
      */
     protected $emplacementFichier = '';
 
     /**
      * @var string Le nom du fichier (extension comprise).
+     * @example 'monDocument.trico'
      */
     protected $nomFichier='';
 
     /**
      * @var string L'extension du fichier. Soit trs soit trico.
+     * @example 'trico'
      */
     protected $extensionFichier = '';
 
     /**
      * @var array Il s'agit de données présentent dans l'en-tête XML du fichier. Je les entrepose ici faute de mieux.
+     * @example $metaDonnees['scribe']         = 'nomTranscripteur';
+     * @example $metaDonnees['version']        = '34';
+     * @example $metaDonnees['audio_filename'] = 'fichierAudio.wmv';
+     * @example $metaDonnees['version_date']   = '150303';
+     * @example $metaDonnees['elapsed_time']   = '0';
      */
     protected $metaDonnees = array();
 
     /**
-     * @var array La liste des tours du fichier.
+     * @var array La liste (ordonnée) des tours (sous forme d'objets Tour) du fichier.
      */
     protected $listeTours = array();
 
     /**
-     * @var array La liste des locuteurs de ce tour.
+     * @var array La liste des locuteurs (sous forme d'objets Locuteur) de ce tour.
      */
     protected $listeLocuteurs = array();
 
     /**
-     * @var string Le chrono d'où devra commencer le nouveau fichier.
+     * @var string Le chrono d'où devra commencer le nouveau fichier. Correspond à l'attribut startTime de la balise Section.
+     * Peut correspondre à l'attribut startTime du premier tour.
+     * @example = '0'
      */
     protected $chronoDebut = '';
 
     /**
-     * @var string Le chrono où s'arrêtera le nouveau fichier.
+     * @var string Le chrono où s'arrêtera le nouveau fichier. Correspond à l'attribut endTime de la balise Section.
+     * Peut correspondre à l'attribut endTime du dernier tour.
+     * @example '618.560'
      */
     protected $chronoFin = '';
 
     /**
      * @var string La transcription peut être lie à un fichier sonore qu'il faudra alors découpé comme la transcription.
+     * @example 'monFichierAudio.mp3'
      */
     protected $fichierSonAssocie = '';
 
     /**
      * @var string L'emplacement du fichier sonore(extension comprise).
+     * @example '/home/Documents/monFichierAudio.ogg'
      */
     protected $emplacementFichierSonAssocie = '';
 
     /**
      * @var string L'utilisateur souhaite-t-il recaler les sons ? String pour le moment, TODO Bool plus tard ?
+     * @example 'recalculer'
+     * @example 'laisser' ou autre chose est équivalent pour le moment
      */
     protected $choixSynchro = '';
 
     /**
      * @var string L'emplacement complet du fichier final.
+     * @example '/var/www/html/coupeTranscriber/resultats/monFichierFinal.trs' dans le cas d'un simple
+     * découpage de transcription
+     * @example '/var/www/html/coupeTranscriber/resultats/monArchiveFinale.zip' si un découpage sonore a également
+     * été demandé.
      */
     protected $fichierFinal = '';
 
@@ -93,7 +121,7 @@ class Fichier extends ModeleAbstrait
             $this->emplacementFichierSonAssocie = getcwd() . '/uploads/' . $this->fichierSonAssocie;
             $this->chronoDebut                  = $donnees['chronoDebut'];
             $this->chronoFin                    = $donnees['chronoFin'];
-            $this->choixSynchro                 = $donnees['actionChrono'];
+            $this->choixSynchro                 = strtolower($donnees['actionChrono']);
             $this->parcourirFichier();
             $this->creerResultat($this->reconstruction());
         }
@@ -105,6 +133,12 @@ class Fichier extends ModeleAbstrait
         //var_dump($this->listeTours);
     }
 
+    /**
+     * Une fois tout le traitement du texte effectué, on écrit celui-ci dans un fichier. Si le découpage sonore a
+     * également été demandé, on le fait ici aussi et on zippe la transcription et l'audio ensemble. Enfin,
+     * on efface d'éventuels fichiers interméduiares/uploadés restés.
+     * @param $texteTranscription Le texte final sous forme brute.
+     */
     protected function creerResultat($texteTranscription)
     {
         /*
@@ -161,6 +195,10 @@ class Fichier extends ModeleAbstrait
         exec($commande);
     }
 
+    /**
+     * Lorsque l'utilisateur a fini de télécharger son résultat, il est judicieux d'effacer le fichier final, celui-ci
+     * pouvant être encombrant en cas de découpage audio.
+     */
     public function effacerFichierFinal()
     {
         $commande = 'rm ' . $this->fichierFinal;
@@ -180,10 +218,8 @@ class Fichier extends ModeleAbstrait
         $reader = new XMLReader();
         $reader->XML($xml, NULL, LIBXML_NOWARNING|LIBXML_NOERROR ); // Faire sauter tous les paramètres sauf le premier
                                                                     // pour voir les erreurs inhérentes au fichier.
-
         // On s'en fout si la dtd est absente.
         $reader->setParserProperty(XMLReader::VALIDATE, false);
-
         $nouveauTour = new Tour();
 
         //              MÉTADONNÉES
@@ -192,7 +228,6 @@ class Fichier extends ModeleAbstrait
         $this->metaDonnees['audio_filename'] = '';
         $this->metaDonnees['version_date']   = '';
         $this->metaDonnees['elapsed_time']   = '';
-
 
         while ($reader->read())
         {
@@ -301,6 +336,11 @@ class Fichier extends ModeleAbstrait
         }
     }
 
+    /**
+     * Cette méthode recréé la transcription à partir des chronos de départ et de fin et recalcule les nouvelles
+     * balises temporelles si cela a été demandé.
+     * @return string Le texte final de la transcription une fois découpée.
+     */
     public function reconstruction()
     {
         $dtd = 'trans-14.dtd';
@@ -351,9 +391,14 @@ class Fichier extends ModeleAbstrait
         return $texteXML;
     }
 
-
-
-
+    /**
+     * Cette fonction sélectionne les tours à garder et les recréé.
+     * @param $listeTours La liste complète des tours du fichier initial.
+     * @param $chronoDebut À quel moment l'utilisateur souhaite-t-il commencer la nouvelle transcription ?
+     * @param $chronoFin À quel moment l'utilisateur souhaite-t-il achever la nouvelle transcription ?
+     * @param $choixSynchro Faut-il laisser les chronos des tours tels quels ou les recalculer ?
+     * @return string Le texte brut et concaténé des tours.
+     */
     protected function regenererListeTours($listeTours, $chronoDebut, $chronoFin, $choixSynchro)
     {
         $balisesTRS = '';
@@ -367,7 +412,7 @@ class Fichier extends ModeleAbstrait
                 // Les tours qui correspondent aux bornes demandés par l'utilisateur. Tous les autres sont à ignorer.
                 $chronoDebutTour = $tour->getChronoDebut();
                 $chronoFinTour   = $tour->getChronoFin();
-                if($choixSynchro =='recalculer')
+                if(strtolower($choixSynchro) =='recalculer')
                 {
                     $chronoFinTour   = floatval($chronoFinTour) - floatval($chronoDebut);
                     $chronoDebutTour = floatval($chronoDebutTour) - floatval($chronoDebut);
@@ -382,7 +427,11 @@ class Fichier extends ModeleAbstrait
         return $balisesTRS;
     }
 
-
+    /**
+     * @param $tour Un objet Tour à regénérer au format .trs ou .trico
+     * @param $chronoDebut Le chrono de départ choisi par l'utilisateur. Sert à recaler les chronos si besoin.
+     * @return string Le texte brut du tour au format .trs ou .trico.
+     */
     protected function regenererDeroulementDuTour($tour, $chronoDebut)
     {
         $contenuTour = '';
@@ -417,7 +466,13 @@ class Fichier extends ModeleAbstrait
     }
 
 
-
+    /**
+     * @param $listeTours La liste complète des tours.
+     * @param $chronoDebut Le chrono de départ choisi par l'utilisateur.
+     * @param $chronoFin Le chrono de fin choisi par l'utilisateur.
+     * @param $choixSynchro Faut-il recaler les chronos ?
+     * @return string Le texte brut de la balise Section au format .trs ou .trico.
+     */
     protected function genererBaliseSection($listeTours, $chronoDebut, $chronoFin, $choixSynchro)
     {
         if($choixSynchro == 'recalculer')
@@ -467,7 +522,9 @@ class Fichier extends ModeleAbstrait
         return '[' . $heures . '-' . $minutes . '-' . $secondes . '-' . $decimales .  ']';
     }
 
-
+    /**
+     * Gestion complète de la réception des fichiers de transcription et audio.
+     */
     protected function upload()
     {
         // Il y a au moins un fichier de transcription à récupérer et potentiellement un fichier son également.
@@ -545,6 +602,11 @@ class Fichier extends ModeleAbstrait
         }
     }
 
+    /**
+     * Cette méthode récupère tous les attributs startTime et endTime de chaque tour de la transcription reçue et en
+     * renvoie la liste.
+     * @return array La liste de tous les chronos contenus dans les tours.
+     */
     public function getListeBalisesTemporelles()
     {
         /*

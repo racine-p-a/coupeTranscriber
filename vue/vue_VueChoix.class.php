@@ -1,13 +1,29 @@
 <?php
+/**
+ * @author Pierre-Alexandre RACINE
+ * @licence CeCILL-B
+ * @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+ * @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+ * Vue où l'utilisateur doit choisir où découper la transcription et le fichier audio et si il faut recaler ces chronos à 0.
+ */
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 include_once('vue/vue_VueAbstraite.class.php');
 
 class VueChoix extends VueAbstraite
 {
+    /**
+     * @var string Le code HTML généré.
+     */
     protected $corpsHTML = '<!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
+        <title>CNRS coupeTranscriber</title>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <link rel="stylesheet" type="text/css" href="css/css_coupeTranscriber.css">
     </head>
 <body>
@@ -50,6 +66,12 @@ class VueChoix extends VueAbstraite
          */
     }
 
+    /**
+     * On génère le contenu des menus de sélection (ils devront contenir les chronos et le débit du texte de chaque tour).
+     * @param array $listeTours La liste de tous les tours de la transcription reçus par le serveur.
+     * @param string $nomBalise Le nom à donner à ce menu à créer.
+     * @return string Le code HTML de ce menu ainsi créé.
+     */
     protected function genererListeOptions($listeTours = array(), $nomBalise = '')
     {
         $html = '
@@ -69,6 +91,10 @@ class VueChoix extends VueAbstraite
     }
 
 
+    /**
+     * Simplement le contenu des boutons radio.
+     * @return string Le code HTML gérant ces boutons.
+     */
     protected function genererBoutonsRadio()
     {
         $html = '<br>
@@ -78,6 +104,11 @@ class VueChoix extends VueAbstraite
         return $html;
     }
 
+    /**
+     * Affiche un encart au sujet des erreurs levées ou pas durant l'import.
+     * @param $erreurs Le texte des erreurs compréhensibles par l'utilisateur.
+     * @return string Le code HTML de l'encart des erreurs.
+     */
     protected function genererRapportErreurs($erreurs)
     {
         if($erreurs == '')
@@ -116,8 +147,12 @@ class VueChoix extends VueAbstraite
         return $html;
     }
 
-
-
+    /**
+     * Affiche un encart au sujet des erreurs levées ou pas durant l'affichage. Ces erreurs ne sont pas graves et
+     * ne gênent en rien l'éxécution mais risquent de gêner l'affichage.
+     * @param $erreurs Le texte des erreurs compréhensibles par l'utilisateur.
+     * @return string Le code HTML de l'encart des erreurs.
+     */
     protected function genererErreursAffichage()
     {
         $rapportErreurs = '';
@@ -141,6 +176,10 @@ class VueChoix extends VueAbstraite
         return $rapportErreurs;
     }
 
+    /**
+     * Créé le code HTML des scripts.
+     * @return string Le code HTML/javascript de tous les scripts de cette page.
+     */
     protected function genererScripts()
     {
         // Il n'y a qu'un seul script pour le moment : celui de vérification des bornes. La borne de début doit être
@@ -164,9 +203,7 @@ class VueChoix extends VueAbstraite
                 }
                 
             }
-        
         </script>';
-
 
         return $scripts;
     }
@@ -209,6 +246,4 @@ class VueChoix extends VueAbstraite
 
         return '[' . $heures . ':' . $minutes . ':' . $secondes . '.' . $decimales .  ']';
     }
-
-
 }
