@@ -43,6 +43,7 @@ class ControleurPrincipal
             // D'abord, récupérons les noms des fichiers de transcription et audio (si celui-ci existe).
             $donnees = new Fichier($_POST);
             $emplacementFichierATelecharger = $donnees->getFichierFinal();
+
             if(file_exists($emplacementFichierATelecharger))
             {
                 header('Pragma: public');
@@ -60,6 +61,9 @@ class ControleurPrincipal
                 $donnees->effacerFichierFinal();
                 exit();
             }
+            /*
+             *
+             */
         }
 
     }

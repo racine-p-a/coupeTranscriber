@@ -113,7 +113,7 @@ class Fichier extends ModeleAbstrait
     {
         if($donnees != '')
         {
-            echo $donnees['nomFichierTranscription'];
+            //echo $donnees['nomFichierTranscription'];
             $this->nomFichier                   = $donnees['nomFichierTranscription'];
             $this->emplacementFichier           = 'uploads/' . $this->nomFichier;
             $this->extensionFichier             = pathinfo($this->nomFichier)['extension'];
@@ -179,8 +179,11 @@ class Fichier extends ModeleAbstrait
         *****************************************/
             // L'archive contient la transcription et le fichier sonore. Elle n'est créée que lorsque un fichier sonore est demandé.
             $emplacementArchive = getcwd() . '/resultats/' . $this->nomFichier . '.zip';
-            $commande = '7z a ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
-            //echo $commande;
+            // Version 7z universelle mais requérant l'installation de 7zip
+            // $commande = '7z a ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
+            // Version zip fonctionnant sur de nombreux systèmes.
+            $commande = 'zip -j ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
+            echo $commande;
             exec($commande);
 
             // Les deux fichiers sont à présent dans l'archive. On peut les supprimer du dossier /résultats.

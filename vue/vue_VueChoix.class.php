@@ -114,18 +114,22 @@ class VueChoix extends VueAbstraite
         if($erreurs == '')
         {
             $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>';
-            $nomImage = $this->recupererImage('succes');
-            if($nomImage !='' && strtolower(pathinfo('img/succes/' . $nomImage)['extension']) == 'mp4')
+            if(rand(0,50) == 2)
             {
-                $html .= '
+                $nomImage = $this->recupererImage('succes');
+                if($nomImage !='' && strtolower(pathinfo('img/succes/' . $nomImage)['extension']) == 'mp4')
+                {
+                    $html .= '
                 <video width="320" height="240" autoplay loop>
                     <source src="img/succes/' . $nomImage . '" type="video/mp4">
                 </video> ';
+                }
+                else if($nomImage !='')
+                {
+                    $html .= '<img src="img/succes/' . $nomImage . '">';
+                }
             }
-            else if($nomImage !='')
-            {
-                $html .= '<img src="img/succes/' . $nomImage . '">';
-            }
+
 
 
 
@@ -133,10 +137,14 @@ class VueChoix extends VueAbstraite
         else
         {
             $nomImage = $this->recupererImage('echec');
-            if($nomImage != '')
+            if(rand(0,50) == 2)
             {
-                $codeImage = '<img src="img/echec/' . $nomImage . '">\'';
+                if($nomImage != '')
+                {
+                    $codeImage = '<img src="img/echec/' . $nomImage . '">\'';
+                }
             }
+
             $html = '<h4>ATTENTION ! Des erreurs ont été levées durant l\'importation du fichier. <a href="https://github.com/racine-p-a/coupeTranscriber">Prévenez-en l\'auteur de ce logiciel.</a></h4>
             
             <p>' .
