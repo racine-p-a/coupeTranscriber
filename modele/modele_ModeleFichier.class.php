@@ -183,7 +183,8 @@ class Fichier extends ModeleAbstrait
             // $commande = '7z a ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
             // Version zip fonctionnant sur de nombreux systèmes.
             $commande = 'zip -j ' . $emplacementArchive . ' ' . $fichierSonDeSortie . ' ' . $emplacementResultatTranscription;
-            echo $commande;
+            // |--> l'option -j signifie que l'arborescence des fichiers archivés N'est PAS respectée.
+            //echo $commande;
             exec($commande);
 
             // Les deux fichiers sont à présent dans l'archive. On peut les supprimer du dossier /résultats.
