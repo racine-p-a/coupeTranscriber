@@ -23,7 +23,7 @@ class Fichier extends ModeleAbstrait
      * @var int La taille maximale de fichier (sonore) acceptée. À modifier par l'utilisateur si il en a besoin.
      * @example 100000000
      */
-    protected $limiteTailleDeFichierSonore = 100000000;
+    protected $limiteTailleDeFichierSonore = 2000000000;
 
     /**
      * @var string L'emplacement du fichier à étudier et découper.
