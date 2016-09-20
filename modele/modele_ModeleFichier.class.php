@@ -216,7 +216,7 @@ class Fichier extends ModeleAbstrait
     protected function parcourirFichier()
     {
         // On parcourt le fichier pour en extraire les tours.
-        $refl = new ReflectionClass('XMLReader');
+        #$refl = new ReflectionClass('XMLReader');
         $xml_consts = $refl->getConstants();
         $xml = file_get_contents($this->emplacementFichier);
         $reader = new XMLReader();

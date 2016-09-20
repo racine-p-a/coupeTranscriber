@@ -23,7 +23,6 @@ verificationEntree ()
     else
         echo $1 "n'est pas un entier positif."
         return 1
-    
     fi
 }
 
@@ -78,6 +77,7 @@ echo 'La variable post_max_size sera initialisée à' $post_max_size'.'
 echo "À présent, l'installateur télécharge et installe les dépendances suivantes si elles ne sont pas déjà installées : "
 echo '- apache2 (le serveur).'
 echo '- php libapache2-mod-php (le langage utilisé et son greffon sur le serveur).'
+echo '- php-xml php-mbstring (pour que PHP puisse gérer le XML et les chaînes de caractères unicode)'
 echo '- git (pour récupérer les fichiers).'
 echo '- curl (si vous voulez faire des appels au serveur en ligne de commandes).'
 echo '- libav-tools (pour découper les fichiers sonores que vous enverrez).'
@@ -110,7 +110,13 @@ case $desktop in
             ;;
 esac
 
-apt-get install apache2 php libapache2-mod-php git curl libav-tools $paquet
+apt-get install apache2 php libapache2-mod-php php-xml php-mbstring git curl libav-tools $paquet
+
+service apache2 restart
+
+# GIT CLONE https://github.com/racine-p-a/coupeTranscriber
+git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber
+
 
 
 # MODIFICATION DU PHP.INI
@@ -120,14 +126,17 @@ apt-get install apache2 php libapache2-mod-php git curl libav-tools $paquet
     # En cas d'échec, l'utilisateur devra modifier à la main (ou de manière assistée) les valeurs dans le php.ini d'apache.
 texteHtAccess='php_value upload_max_filesize '$upload_max_filesize'M\nphp_value post_max_size '$post_max_size'M'
 texteIni='upload_max_filesize = '$upload_max_filesize'M\npost_max_size = '$post_max_size'M'
-echo -e $texteHtAccess>.htaccess
-echo -e $texteIni>php.ini
-echo -e $texteIni>.user.ini
+echo -e $texteHtAccess>/var/www/html/.htaccess
+echo -e $texteIni>/var/www/html/php.ini
+echo -e $texteIni>/var/www/html/.user.ini
 echo ''
 echo 'Si à l'\''utilisation, vous avez des problèmes lors de la phase d'\''envoi des fichiers, il vous faudra modifier'
 echo 'vous même les paramètres upload_max_filesize et post_max_size de votre fichier php.ini.'
+echo 'Ce fichier se trouve normalement ans /etc/php/(NuméroDeVersionDePHP)/apache2/php.ini'
 
 
 
-# GIT CLONE https://github.com/racine-p-a/coupeTranscriber
-git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber
+
+
+# MODIFICATION DES DROITS D'ACCÈS AUX DOSSIER
+chmod -R 777 /var/www/html/coupeTranscriber

@@ -164,6 +164,7 @@ class VueChoix extends VueAbstraite
     protected function genererErreursAffichage()
     {
         $rapportErreurs = '';
+        $codeImage = '';
 
         if(!$this->erreurs == '')
         {
