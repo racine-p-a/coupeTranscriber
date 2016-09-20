@@ -65,7 +65,7 @@ class VueChoix extends VueAbstraite
             $this->genererBoutonsRadio() .
             '
         
-            <input type="submit" name="fichierDemande" value="Télécharger">
+            <button type="submit button" class="btn btn-success" name="fichierDemande" value="Télécharger">Télécharger</button>
             <p id="affichageErreurs">
             </p>
         </form>' . $this->genererScripts() .

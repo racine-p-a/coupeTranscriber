@@ -55,7 +55,7 @@ class VueAccueil extends VueAbstraite
         <h3>Vous pouvez également importer un fichier sonore avec afin qu\'il soit découpé aussi.</h3>
         <input type="file" name="fichierSonore" id="fichierSonore" /><br>
     
-        <input type="submit" name="envoiFichier" value="Envoyer" />
+        <button type="button submit" name="envoiFichier" class="btn btn-primary" value="Envoyer">Envoyer</button>
     
     </form>
 
