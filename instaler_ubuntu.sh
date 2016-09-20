@@ -132,7 +132,7 @@ echo -e $texteIni>/var/www/html/.user.ini
 echo ''
 echo 'Si à l'\''utilisation, vous avez des problèmes lors de la phase d'\''envoi des fichiers, il vous faudra modifier'
 echo 'vous même les paramètres upload_max_filesize et post_max_size de votre fichier php.ini.'
-echo 'Ce fichier se trouve normalement ans /etc/php/(NuméroDeVersionDePHP)/apache2/php.ini'
+echo 'Ce fichier se trouve normalement dans /etc/php/(NuméroDeVersionDePHP)/apache2/php.ini'
 
 
 

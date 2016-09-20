@@ -60,8 +60,7 @@ TODO
 ----------------------
 
 #PLANNED ENHANCEMENTS / AMÉLIORATIONS PRÉVUES
-* Remplacer p7zip par zip pour les compressions --> Un logiciel de moins à installer.
-* Créer un installateur pour DebIan/Ubuntu (éventuellement mac).
+* Créer un installateur pour DebIan (éventuellement mac).
 * (Ré-)Écrire la documentaton.
 * Rendre l'interface moins austère.
 * Vérifier en js les formats données dans les formulaires.

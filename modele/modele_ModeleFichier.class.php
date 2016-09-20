@@ -217,7 +217,7 @@ class Fichier extends ModeleAbstrait
     {
         // On parcourt le fichier pour en extraire les tours.
         #$refl = new ReflectionClass('XMLReader');
-        $xml_consts = $refl->getConstants();
+        #$xml_consts = $refl->getConstants();
         $xml = file_get_contents($this->emplacementFichier);
         $reader = new XMLReader();
         $reader->XML($xml, NULL, LIBXML_NOWARNING|LIBXML_NOERROR ); // Faire sauter tous les paramètres sauf le premier
