@@ -110,7 +110,7 @@ case $desktop in
             ;;
 esac
 
-#apt-get install apache2 php libapache2-mod-php git curl libav-tools $paquet
+apt-get install apache2 php libapache2-mod-php git curl libav-tools $paquet
 
 
 # MODIFICATION DU PHP.INI
@@ -130,4 +130,4 @@ echo 'vous même les paramètres upload_max_filesize et post_max_size de votre f
 
 
 # GIT CLONE https://github.com/racine-p-a/coupeTranscriber
-git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html
+git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber
