@@ -1,6 +1,6 @@
 # coupeTranscriber
 
-Project is currently done ans works perfectly fine.
+Project is currently done and works perfectly fine.
 
 Projet achevé et foncionnel !
 
@@ -10,6 +10,9 @@ Notable used softwares/Logiciels notables utilisés :
 - [avconv](https://libav.org/avconv.html)
 - [curl](https://curl.haxx.se/)
 - [Bootstrap Twitter](http://getbootstrap.com/)
+
+# Licence
+This program is under the [CeCiLL](http://www.cecill.info/licences.fr.html) 
 
 # OVERVIEW/APERÇU
 
