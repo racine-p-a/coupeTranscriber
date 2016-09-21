@@ -12,7 +12,7 @@ Notable used softwares/Logiciels notables utilisés :
 - [Bootstrap Twitter](http://getbootstrap.com/)
 
 # Licence
-This program is under the [CeCiLL](http://www.cecill.info/licences.fr.html) 
+This program is under the [CeCiLL-B](http://www.cecill.info/licences.fr.html) 
 
 # OVERVIEW/APERÇU
 

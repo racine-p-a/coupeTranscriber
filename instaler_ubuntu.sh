@@ -1,5 +1,17 @@
 #!/bin/bash
 #######################################################################
+#                             LICENCE
+# @author Pierre-Alexandre RACINE
+# @licence CeCILL-B
+# @license FR http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.html
+# @license EN http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.html
+# Automatic coupeTranscriber installer for Ubuntu users.
+# Installeur automatique de coupeTranscriber pour Ubuntu.
+#######################################################################
+
+
+
+#######################################################################
 #                             FONCTIONS
 #######################################################################
 
