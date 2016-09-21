@@ -58,6 +58,51 @@ class VueAccueil extends VueAbstraite
         <button type="button submit" name="envoiFichier" class="btn btn-primary" value="Envoyer">Envoyer</button>
     
     </form>
+    
+    
+    <script>
+        fichierTranscription.addEventListener(\'change\', verificationFormatTranscription, false);
+        fichierSonore.addEventListener(\'change\', verificationFormatSon, false);
+        
+        function verificationFormatSon(e)
+        {
+            var formatsSonAutorises = new Array("flac", "mp3", "ogg", "wav", "wma");
+            var file_list = e.target.files;
+            
+            for(var i = 0, file; file = file_list[i]; i++)
+            {
+                var sFileName = file.name;
+                var sFileExtension = sFileName.split(".")[sFileName.split(".").length - 1].toLowerCase();
+                var iFileSize = file.size;
+                var iConvert = (file.size / 10485760).toFixed(2);
+                
+                if(formatsSonAutorises.indexOf(sFileExtension) == -1)
+                {
+                    alert("Format sonore inconnu ou peu courant.\nLe résultat pourrait dépendre des codecs installés sur votre machine");
+                }
+            }
+        }
+        
+        function verificationFormatTranscription(e)
+        {
+            var formatsTranscriptionAutorises = new Array("trico", "trs");
+            var file_list = e.target.files;
+            
+            for(var i = 0, file; file = file_list[i]; i++)
+            {
+                var sFileName = file.name;
+                var sFileExtension = sFileName.split(".")[sFileName.split(".").length - 1].toLowerCase();
+                var iFileSize = file.size;
+                var iConvert = (file.size / 10485760).toFixed(2);
+                
+                if(formatsTranscriptionAutorises.indexOf(sFileExtension) == -1)
+                {
+                    alert("Format de transcription non autorisé. L\'application ne pourra pas fonctionner.");
+                }
+            }
+        }
+
+    </script>
 
 </body>
 </html>';
