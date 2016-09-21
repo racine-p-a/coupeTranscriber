@@ -65,7 +65,7 @@ class VueChoix extends VueAbstraite
             $this->genererBoutonsRadio() .
             '
         
-            <button type="submit button" class="btn btn-success" name="fichierDemande" value="Télécharger">Télécharger</button>
+            <button type="submit" class="btn btn-success" name="fichierDemande" value="Télécharger">Télécharger</button>
             <p id="affichageErreurs">
             </p>
         </form>' . $this->genererScripts() .
@@ -137,7 +137,7 @@ class VueChoix extends VueAbstraite
                 }
                 else if($nomImage !='')
                 {
-                    $html .= '<img src="img/succes/' . $nomImage . '">';
+                    $html .= '<img alt="erreur" src="img/succes/' . $nomImage . '">';
                 }
             }
 
@@ -152,7 +152,7 @@ class VueChoix extends VueAbstraite
             {
                 if($nomImage != '')
                 {
-                    $codeImage = '<img src="img/echec/' . $nomImage . '">\'';
+                    $codeImage = '<img alt="erreur" src="img/echec/' . $nomImage . '">\'';
                 }
             }
 
@@ -182,7 +182,7 @@ class VueChoix extends VueAbstraite
             $nomImage = $this->recupererImage('echec');
             if($nomImage != '')
             {
-                $codeImage = '<img src="img/echec/' . $nomImage . '">';
+                $codeImage = '<img alt="erreur" src="img/echec/' . $nomImage . '">';
             }
             $rapportErreurs .= '
         <h3>Des erreurs ont été levées durant l\'affichage. Elles ne gêneront pas le découpage du fichier mais nuisent au confort d\'utilisation.
