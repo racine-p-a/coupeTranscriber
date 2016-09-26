@@ -182,10 +182,20 @@ class VueChoix extends VueAbstraite
             $nomImage = $this->recupererImage('echec');
             if($nomImage != '')
             {
-                $codeImage = '<img alt="erreur" src="img/echec/' . $nomImage . '">';
+                if($nomImage !='' && strtolower(pathinfo('img/succes/' . $nomImage)['extension']) == 'mp4' || $nomImage !='' && strtolower(pathinfo('img/succes/' . $nomImage)['extension']) == 'webm')
+                {
+                    $codeImage .= '
+                <video width="320" height="240" autoplay loop>
+                    <source src="img/echec/' . $nomImage . '" type="video/' . strtolower(pathinfo('img/succes/' . $nomImage)['extension']) . '">
+                </video> ';
+                }
+                else
+                {
+                    $codeImage = '<img alt="erreur" src="img/echec/' . $nomImage . '">';
+                }
             }
             $rapportErreurs .= '
-        <h3>Des erreurs ont été levées durant l\'affichage. Elles ne gêneront pas le découpage du fichier mais nuisent au confort d\'utilisation.
+        <h3>Des erreurs ont été levées durant l\'affichage. Elles ne gêneront pas le découpage du fichier mais peuvent nuire au confort d\'utilisation.
         <a href="https://github.com/racine-p-a/coupeTranscriber">Reportez-les si possible afin qu\'elles soient corrigées.</a></h3>
             ' . $codeImage . '
             <p>

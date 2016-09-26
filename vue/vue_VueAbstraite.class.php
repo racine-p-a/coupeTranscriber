@@ -69,6 +69,10 @@ class VueAbstraite
                 {
                     $resultatTexte .= ':';
                 }
+                else if($action->getDesc() == '(inaud.)')
+                {
+                    $resultatTexte .= '(inaud.)';
+                }
                 else if($action->getType() == 'noise' && $action->getExtent() == 'instantaneous')
                 {
                     $resultatTexte .= $action->getDesc();
@@ -113,9 +117,17 @@ class VueAbstraite
                 {
                     $resultatTexte .= $action->getDesc();
                 }
+                else if($action->getType() == 'noise' && $action->getExtent() == 'begin')
+                {
+                    $resultatTexte .= '(' . $action->getDesc() . ')';
+                }
                 else if($action->getType() == 'noise' && $action->getExtent() == 'end')
                 {
                     $resultatTexte .= '(' . $action->getDesc() . ')';
+                }
+                else if($action->getType() == 'pronounce' && $action->getExtent() == 'instantaneous')
+                {
+                    $resultatTexte .= $action->getDesc();
                 }
                 else
                 {
