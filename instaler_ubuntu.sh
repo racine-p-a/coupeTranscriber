@@ -122,7 +122,7 @@ case $desktop in
             ;;
 esac
 
-apt-get install apache2 php libapache2-mod-php php-xml php-mbstring git curl libav-tools $paquet
+apt-get -y install apache2 php libapache2-mod-php php-xml php-mbstring git curl libav-tools $paquet
 
 service apache2 restart
 

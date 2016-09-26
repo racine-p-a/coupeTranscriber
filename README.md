@@ -1,10 +1,10 @@
 # coupeTranscriber
 
-Project is currently done and works perfectly fine.
+The project is currently finished and functional.
 
 Projet achevé et foncionnel !
 
-Notable used softwares/Logiciels notables utilisés :
+Notable software used/Logiciels notables utilisés :
 - [apache](https://httpd.apache.org/)
 - [php](https://secure.php.net/manual/fr/index.php)
 - [avconv](https://libav.org/avconv.html)
@@ -18,14 +18,13 @@ This program is under the [CeCiLL-B](http://www.cecill.info/licences.fr.html)
 
 ## English
 
-This project focuses on the slashing of transcriber files with an automatic recalculation of all timings.
-It means that if you want only a portion of a transcription, you'll have to :
+The aim of this project is to divide the transcriptions (in Transcriber format .trs) The application recalculates the times from 0 if you desire, and according to the following processes.
 <ol>
     <li>Once the application is installed on your computer, open your web browser and go to this address : http://localhost/coupeTranscriber/index.php</li>
-    <li>Import the file in the interface</li>
-    <li>Choose the two timings you want (beginning and ending of the portion you want)</li>
-    <li>Decide if you want to keep those timings unchanged or to restart the first one at 0 (in this case, the followings ara automatically recalculated)</li>
-    <li>Done ! Just accept the downloading file in your web browser.</li>
+    <li>Import the file in the interface.</li>
+    <li>Choose the desired beginning and end times.</li>
+    <li>Decide if you would like to keep the times as they are or if you would like to restart from 0 (in which case all following times wil be recalculated automatically).</li>
+    <li>Done! Just accept the download in your web browser.</li>
 </ol>
  
 ## Français
@@ -52,19 +51,19 @@ For Windows users, you can [download](https://sourceforge.net/projects/wampserve
 
 For Mac users, you can [download and install MAMP](https://www.mamp.info/en/downloads/).
 
-- Restart apache (On Ubuntu : `sudo service apache2 restart`)
+- Restart apache (On Ubuntu: `sudo service apache2 restart`)
 
-- Just download the zipped project (or git-clone it) ans copy the files on your server root location. (Ubuntu : `git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber`)
+- Just download the zipped project (or git-clone it) and copy the files on your server root location. (Ubuntu : `git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber`)
 
-Location for Ubuntu users : `/var/www/html/coupeTrancriber`
+Location for Ubuntu users: `/var/www/html/coupeTrancriber`
 
-Location for DebIan users : `/var/www/coupeTranscriber`
+Location for DebIan users: `/var/www/coupeTranscriber`
 
 Location for Mac and windows users is the root directory of your server MAMP/WAMP.
 
 - Increase the parameters upload_max_filesize and post_max_size depending on the size of the file you want to slice with the application. **Be cautious**, those modifications are going to change the behaviour of all your applications working with apache.
 
-- Make sure all the directory are readable/writable by the server. Make `sudo chmod -R 777 /var/www/html/coupeTranscriber` if you are in a hurry.
+- Make sure all the directories are readable/writable by the server. Make `sudo chmod -R 777 /var/www/html/coupeTranscriber` if you are in a hurry.
 
 - Open your web browser and go to [http://localhost/coupeTranscriber/index.php](http://localhost/coupeTranscriber/index.php) .
 
@@ -77,14 +76,14 @@ Location for Mac and windows users is the root directory of your server MAMP/WAM
 #### English
 
 You can just download the file named instaler_ubuntu.sh and execute it as super-user ( `sudo ./instaler_ubuntu.sh` launched in the installer's directory).
-It will launch an automatic Git installation on the convenient place.
+It will launch an automatic Git installation at the convenient place.
 
 In some (most) cases, it appears that Apache blocks maximum filesize you can upload up to 2Mo which is quite tiny especially if you want to cut audio files.
-If that happens, you can change those parameters in your `/etc/php/PHPVersionNumber/apache2/php.ini` :
+If this happens, you can change those parameters in your `/etc/php/PHPVersionNumber/apache2/php.ini` :
 - upload_max_filesize
 - post_max_size
-**Be careful**, those modification are going to apply on all your local web applications. 
-Once it is done, you can access to the application here : [http://localhost/coupeTranscriber/index.php](http://localhost/coupeTranscriber/index.php) .
+**Be careful**, these modifications are going to apply on all your local web applications. 
+Once it is done, you can access the application here: [http://localhost/coupeTranscriber/index.php](http://localhost/coupeTranscriber/index.php) .
 
 #### Français
 
@@ -102,11 +101,11 @@ Dès que l'installation sera terminée, vous pourrez utiliser l'application ici�
 ### DEBIAN
 TODO
 
-## I DON'T WANT TO INSTALL IT ! I JUST WANT TO USE IT ! JE VEUX JUSTE M'EN SERVIR SANS L'INSTALLER !
+## I DON'T WANT TO INSTALL IT! I JUST WANT TO USE IT! JE VEUX JUSTE M'EN SERVIR SANS L'INSTALLER !
 TODO
 
 ## PROBLEMS / PROBLÈMES
-- If you can not upload your file, browse your apache php.ini increase the parameters upload_max_filesize and post_max_size at more convenient values. Then restart apache (ubuntu : sudo service apache2 restart).
+- If you cannot upload your file, browse your apache php.ini increase the parameters upload_max_filesize and post_max_size at more convenient values. Then restart apache (ubuntu : sudo service apache2 restart).
 
 - Si vous ne pouvez pas passer l'étape d'envoi de fichiers, ouvrez votre php.ini (celui d'apache) et acroissez les paramètres upload_max_filesize et post_max_size à des valeurs pus hautes. Puis redémarrez Apache (ubuntu : sudo service apache2 restart).
 
