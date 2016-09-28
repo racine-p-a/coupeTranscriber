@@ -124,7 +124,7 @@ class VueChoix extends VueAbstraite
     {
         if($erreurs == '')
         {
-            $html = '<h4>Félicitations, aucune erreur n\'a été levée durant l\'import</h4>';
+            $html = '<h4>Félicitations, aucune erreur n\'a été relevée durant l\'import</h4>';
             if(rand(0,50) == 2)
             {
                 $nomImage = $this->recupererImage('succes');

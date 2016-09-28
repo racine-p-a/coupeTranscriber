@@ -57,7 +57,7 @@ For Mac users, you can [download and install MAMP](https://www.mamp.info/en/down
 
 Location for Ubuntu users: `/var/www/html/coupeTrancriber`
 
-Location for DebIan users: `/var/www/coupeTranscriber`
+Location for DebIan users: `/var/www/coupeTranscriber` or `/var/www/html/coupeTrancriber`(for most recent versions) 
 
 Location for Mac and windows users is the root directory of your server MAMP/WAMP.
 

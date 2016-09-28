@@ -41,8 +41,6 @@ verificationEntree ()
 
 
 
-
-
 #######################################################################
 
 
@@ -54,7 +52,7 @@ echo 'Vous devez juste donner quelques informations afin que cet installateur pu
     # Les deux variables à modifier sont :
     #   - upload_max_filesize
     #   - post_max_size
-    
+
 ######### upload_max_filesize #########
 let "upload_max_filesize = 200"
 echo 'Pour commencer, quelle est la taille maximale (en Mo) autorisez-vous pour un fichier unique ?'
@@ -96,39 +94,29 @@ echo '- libav-tools (pour découper les fichiers sonores que vous enverrez).'
 echo "- Il est également conseillé d'installer les codecs non libres. L'installateur tentera de détecter votre variante d'ubuntu et d'installer les paquets correspondants."
 echo "En cas d'échec, installez ces paquets manuellement et relancez l'installateur."
 echo ''
-######### détection de la variante ubuntu #########
-if [ "$XDG_CURRENT_DESKTOP" = "" ]; then
-  desktop=$(echo "$XDG_DATA_DIRS" | sed 's/.*\(xfce\|kde\|lxde\|gnome\).*/\1/')
-else
-  desktop=$XDG_CURRENT_DESKTOP
-fi
-desktop=${desktop,,}  # Conversion en minuscules.
 
-paquet=''
 
-case $desktop in
-    kde)    echo 'kde détecté'
-            paquet='kubuntu-restricted-extras'
-            ;;
-    gnome)  echo 'gnome détecté'
-            paquet='ubuntu-restricted-extras'
-            ;;
-    lxde)   echo 'lxde détecté'
-            paquet='lubuntu-restricted-extras'
-            ;;
-    xfce)   echo 'xfce détecté'
-            paquet='xubuntu-restricted-extras'
-            ;;
-esac
+# Petite mise à jour des paquets par précaution.
+apt-get update && apt-get upgrade && apt-get dist-upgrade -y
+# Récupération du nouveau dépôt PHP7.
+echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list
+wget https://www.dotdeb.org/dotdeb.gpg && apt-key add dotdeb.gpg
+rm dotdeb.gpg*
+apt-get update
+# Ajout du dépôt non-libre
+echo "deb http://www.deb-multimedia.org stable main non-free">>/etc/apt/sources.list
+apt-get update
+# Suppression de PHP5 si il est installé.
+systemctl stop php5-fpm
+apt-get -y autoremove --purge php5*
+# Installation des paquets
+apt-get --force-yes install apache2 php7.0 php7.0-fpm libapache2-mod-php7.0 php7.0-gd php7.0-curl php7.0-mcrypt php7.0-memcached php7.0-intl php7.0-mbstring php7.0-xml php7.0-zip git curl libav-tools libdvdcss2 vlc
 
-apt-get -y install apache2 php libapache2-mod-php php-xml php-mbstring git curl libav-tools $paquet
 
+# On redémarre Apache.
 service apache2 restart
 
-# GIT CLONE https://github.com/racine-p-a/coupeTranscriber
 git clone https://github.com/racine-p-a/coupeTranscriber /var/www/html/coupeTranscriber
-
-
 
 # MODIFICATION DU PHP.INI
     # La meilleure des solutions serait de créer un fichier .htaccess qui contiendrait toutes les données nécessaires.
@@ -148,7 +136,4 @@ echo 'Sachez néanmoins que cette manipulation est inutile si vous ne souhaitez 
 
 
 
-
-
-# MODIFICATION DES DROITS D'ACCÈS AUX DOSSIERS
 chmod -R 777 /var/www/html/coupeTranscriber
