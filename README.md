@@ -72,7 +72,7 @@ Location for Mac and windows users is the root directory of your server MAMP/WAM
 
 ## AUTOMATIC INSTALLATION
 
-### UBUNTU
+### UBUNTU 16.04
 #### English
 
 You can just download the file named instaler_ubuntu.sh and execute it as super-user ( `sudo ./instaler_ubuntu.sh` launched in the installer's directory).
@@ -98,7 +98,7 @@ Les paramètres à modifier sont :
 **Attention !** Modifier ces paramètres impactera toutes les autres applications utilisant Apache et PHP.
 Dès que l'installation sera terminée, vous pourrez utiliser l'application ici : [http://localhost/coupeTranscriber/index.php](http://localhost/coupeTranscriber/index.php) . 
 
-### DEBIAN
+### DEBIAN 8
 TODO
 
 ## I DON'T WANT TO INSTALL IT! I JUST WANT TO USE IT! JE VEUX JUSTE M'EN SERVIR SANS L'INSTALLER !
